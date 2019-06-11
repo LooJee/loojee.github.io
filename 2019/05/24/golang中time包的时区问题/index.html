@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="最近项目中有一个功能，是定时从远端服务器同步数据到本地，数据中有一个字段是时间格式的。每次我的同步程序从服务器上获取到数据和本地数据库保存的数据进行比较的时候，总是会提示数据发生了变化，但是事实上我并没有修改服务器上的数据。 为了查出问题出现的原因，我在同步的时候将从服务器获取的数据和本地数据库读取的数据都打印了出来进行对比，发现两个数据唯一的区别在于时间的时区不同：服务器获取的数据是 UTC，而">
+<meta name="keywords" content="golang">
+<meta property="og:type" content="article">
+<meta property="og:title" content="golang 中 time 包的时区问题">
+<meta property="og:url" content="http://tech-seeker.cn/2019/05/24/golang中time包的时区问题/index.html">
+<meta property="og:site_name" content="TECH-SEEKER">
+<meta property="og:description" content="最近项目中有一个功能，是定时从远端服务器同步数据到本地，数据中有一个字段是时间格式的。每次我的同步程序从服务器上获取到数据和本地数据库保存的数据进行比较的时候，总是会提示数据发生了变化，但是事实上我并没有修改服务器上的数据。 为了查出问题出现的原因，我在同步的时候将从服务器获取的数据和本地数据库读取的数据都打印了出来进行对比，发现两个数据唯一的区别在于时间的时区不同：服务器获取的数据是 UTC，而">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://www.tech-seeker.cn/wp-content/uploads/2019/05/image.png">
+<meta property="og:image" content="http://www.tech-seeker.cn/wp-content/uploads/2019/05/image-1.png">
+<meta property="og:updated_time" content="2019-06-11T12:21:10.070Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="golang 中 time 包的时区问题">
+<meta name="twitter:description" content="最近项目中有一个功能，是定时从远端服务器同步数据到本地，数据中有一个字段是时间格式的。每次我的同步程序从服务器上获取到数据和本地数据库保存的数据进行比较的时候，总是会提示数据发生了变化，但是事实上我并没有修改服务器上的数据。 为了查出问题出现的原因，我在同步的时候将从服务器获取的数据和本地数据库读取的数据都打印了出来进行对比，发现两个数据唯一的区别在于时间的时区不同：服务器获取的数据是 UTC，而">
+<meta name="twitter:image" content="http://www.tech-seeker.cn/wp-content/uploads/2019/05/image.png">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>golang 中 time 包的时区问题</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="http://github.com/loojee">项目</a></li>
+        
+      </ul>
+    </span>
+    <br>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2019/06/09/博客从-wordpress-迁移到-github-pages/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2019/04/17/golang 中 for range 的问题/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://tech-seeker.cn/2019/05/24/golang中time包的时区问题/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://tech-seeker.cn/2019/05/24/golang中time包的时区问题/&text=golang 中 time 包的时区问题"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://tech-seeker.cn/2019/05/24/golang中time包的时区问题/&title=golang 中 time 包的时区问题"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://tech-seeker.cn/2019/05/24/golang中time包的时区问题/&is_video=false&description=golang 中 time 包的时区问题"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=golang 中 time 包的时区问题&body=Check out this article: http://tech-seeker.cn/2019/05/24/golang中time包的时区问题/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://tech-seeker.cn/2019/05/24/golang中time包的时区问题/&title=golang 中 time 包的时区问题"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://tech-seeker.cn/2019/05/24/golang中time包的时区问题/&title=golang 中 time 包的时区问题"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://tech-seeker.cn/2019/05/24/golang中time包的时区问题/&title=golang 中 time 包的时区问题"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://tech-seeker.cn/2019/05/24/golang中time包的时区问题/&title=golang 中 time 包的时区问题"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://tech-seeker.cn/2019/05/24/golang中time包的时区问题/&name=golang 中 time 包的时区问题&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        golang 中 time 包的时区问题
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">TECH-SEEKER</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2019-05-24T08:16:49.000Z" itemprop="datePublished">2019-05-24</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/golang/">golang</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/golang/">golang</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>最近项目中有一个功能，是定时从远端服务器同步数据到本地，数据中有一个字段是时间格式的。每次我的同步程序从服务器上获取到数据和本地数据库保存的数据进行比较的时候，总是会提示数据发生了变化，但是事实上我并没有修改服务器上的数据。</p>
+<p>为了查出问题出现的原因，我在同步的时候将从服务器获取的数据和本地数据库读取的数据都打印了出来进行对比，发现两个数据唯一的区别在于时间的时区不同：服务器获取的数据是 UTC，而本地数据库的数据用的是 CST。而服务器上获取的时间本是字符串的，是我使用 time.Parse 函数将其转换成时间的，那么问题可能就出在这个函数身上了。</p>
+<p>找到方向后，我就看了下 time.Parse 的源码，发现它实际是调用了 time.parse 函数，而 time.parse 函数的第三个参数就是需要转换的时间默认的时区，而 time.Parse 将该参数赋为 UTC，这可能就是产生错误的原因了。我尝试将 time.Parse 替换成了 time.ParseInLocation，问题解决。</p>
+<p><img src="http://www.tech-seeker.cn/wp-content/uploads/2019/05/image.png" alt></p>
+<p>示例：</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"fmt"</span></span><br><span class="line">    <span class="string">"time"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">     t := <span class="string">"2019-10-10 10:10:10"</span></span><br><span class="line">     t1, _ := time.Parse(<span class="string">"2006-01-02 15:04:05"</span>, t)</span><br><span class="line">     t2, _ := time.ParseInLocation(<span class="string">"2006-01-02 15:04:05"</span>, t, time.Local)</span><br><span class="line">     fmt.Println(t1)</span><br><span class="line">     fmt.Println(t2)</span><br><span class="line">     fmt.Println(t1.Equal(t2))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输出结果：</p>
+<p><img src="http://www.tech-seeker.cn/wp-content/uploads/2019/05/image-1.png" alt></p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>加载评论需要在浏览器启用 JavaScript 脚本支持。</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="http://github.com/loojee">项目</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://tech-seeker.cn/2019/05/24/golang中time包的时区问题/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://tech-seeker.cn/2019/05/24/golang中time包的时区问题/&text=golang 中 time 包的时区问题"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://tech-seeker.cn/2019/05/24/golang中time包的时区问题/&title=golang 中 time 包的时区问题"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://tech-seeker.cn/2019/05/24/golang中time包的时区问题/&is_video=false&description=golang 中 time 包的时区问题"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=golang 中 time 包的时区问题&body=Check out this article: http://tech-seeker.cn/2019/05/24/golang中time包的时区问题/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://tech-seeker.cn/2019/05/24/golang中time包的时区问题/&title=golang 中 time 包的时区问题"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://tech-seeker.cn/2019/05/24/golang中time包的时区问题/&title=golang 中 time 包的时区问题"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://tech-seeker.cn/2019/05/24/golang中time包的时区问题/&title=golang 中 time 包的时区问题"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://tech-seeker.cn/2019/05/24/golang中time包的时区问题/&title=golang 中 time 包的时区问题"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://tech-seeker.cn/2019/05/24/golang中time包的时区问题/&name=golang 中 time 包的时区问题&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2019 Jie Lu
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="http://github.com/loojee">项目</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+    <!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'tech-seeker';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+
+</body>
+</html>

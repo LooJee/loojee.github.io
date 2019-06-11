@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="最近发现在 aws 上有 12 个月免费使用的 ec2 主机，于是就注册了一个，顺便搭建了这个博客。但是，一个好的博客不能总是用 IP 来访问的嘛。于是就在 godaddy 上买了一个域名，并且在阿里云的云解析上注册了 dns 解析，之后就可以用域名来访问本博客了。这时候有个疑问就出来了，为什么购买了域名，并且注册了 dns 解析后就可以在本地浏览器访问博客了呢？ 浏览器如何找到域名对应的 IP当">
+<meta name="keywords" content="DNS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="初探域名解析">
+<meta property="og:url" content="http://tech-seeker.cn/2019/03/31/初探域名解析/index.html">
+<meta property="og:site_name" content="TECH-SEEKER">
+<meta property="og:description" content="最近发现在 aws 上有 12 个月免费使用的 ec2 主机，于是就注册了一个，顺便搭建了这个博客。但是，一个好的博客不能总是用 IP 来访问的嘛。于是就在 godaddy 上买了一个域名，并且在阿里云的云解析上注册了 dns 解析，之后就可以用域名来访问本博客了。这时候有个疑问就出来了，为什么购买了域名，并且注册了 dns 解析后就可以在本地浏览器访问博客了呢？ 浏览器如何找到域名对应的 IP当">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-06-11T12:21:10.071Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="初探域名解析">
+<meta name="twitter:description" content="最近发现在 aws 上有 12 个月免费使用的 ec2 主机，于是就注册了一个，顺便搭建了这个博客。但是，一个好的博客不能总是用 IP 来访问的嘛。于是就在 godaddy 上买了一个域名，并且在阿里云的云解析上注册了 dns 解析，之后就可以用域名来访问本博客了。这时候有个疑问就出来了，为什么购买了域名，并且注册了 dns 解析后就可以在本地浏览器访问博客了呢？ 浏览器如何找到域名对应的 IP当">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>初探域名解析</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="http://github.com/loojee">项目</a></li>
+        
+      </ul>
+    </span>
+    <br>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2019/04/17/golang 中 for range 的问题/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2019/03/24/养成优秀品格的7条准则/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://tech-seeker.cn/2019/03/31/初探域名解析/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://tech-seeker.cn/2019/03/31/初探域名解析/&text=初探域名解析"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://tech-seeker.cn/2019/03/31/初探域名解析/&title=初探域名解析"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://tech-seeker.cn/2019/03/31/初探域名解析/&is_video=false&description=初探域名解析"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=初探域名解析&body=Check out this article: http://tech-seeker.cn/2019/03/31/初探域名解析/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://tech-seeker.cn/2019/03/31/初探域名解析/&title=初探域名解析"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://tech-seeker.cn/2019/03/31/初探域名解析/&title=初探域名解析"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://tech-seeker.cn/2019/03/31/初探域名解析/&title=初探域名解析"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://tech-seeker.cn/2019/03/31/初探域名解析/&title=初探域名解析"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://tech-seeker.cn/2019/03/31/初探域名解析/&name=初探域名解析&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#浏览器如何找到域名对应的-IP"><span class="toc-number">1.</span> <span class="toc-text">浏览器如何找到域名对应的 IP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#域名服务器"><span class="toc-number">2.</span> <span class="toc-text">域名服务器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#域名"><span class="toc-number">2.1.</span> <span class="toc-text">域名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#域名服务器-1"><span class="toc-number">2.2.</span> <span class="toc-text">域名服务器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#域名的层级结构"><span class="toc-number">2.3.</span> <span class="toc-text">域名的层级结构</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#小结"><span class="toc-number">3.</span> <span class="toc-text">小结</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        初探域名解析
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">TECH-SEEKER</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2019-03-31T06:18:43.000Z" itemprop="datePublished">2019-03-31</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/网络技术/">网络技术</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/DNS/">DNS</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>最近发现在 aws 上有 12 个月免费使用的 ec2 主机，于是就注册了一个，顺便搭建了这个博客。但是，一个好的博客不能总是用 IP 来访问的嘛。于是就在 godaddy 上买了一个域名，并且在阿里云的云解析上注册了 dns 解析，之后就可以用域名来访问本博客了。这时候有个疑问就出来了，为什么购买了域名，并且注册了 dns 解析后就可以在本地浏览器访问博客了呢？</p>
+<h2 id="浏览器如何找到域名对应的-IP"><a href="#浏览器如何找到域名对应的-IP" class="headerlink" title="浏览器如何找到域名对应的 IP"></a>浏览器如何找到域名对应的 IP</h2><p>当我们在浏览器的地址栏输入某个域名发起请求时，操作系统会通过最近的 dns 服务器查找域名对应的 IP 地址，比如我现在是用的电脑配置的 dns 服务器为 8.8.8.8。如果电脑没有设置 dns 服务器，那么会默认向路由器发起查询请求。</p>
+<p>最近的 dns 服务器收到查询请求后，会先在本地缓存查找是否有域名对应的信息，如果有的话，将会直接返回对应的域名信息，否则，dns 服务器会向<strong>根域名服务器</strong>发起请求。根域名服务器会从上到下查找域名信息，直到找到对应的域名信息或者找不到对应的域名信息返回错误。</p>
+<p>操作系统收到 dns 服务器的应答后，会做出对应的行为，比如访问对应的服务器或者返回给浏览器对应的错误。</p>
+<h2 id="域名服务器"><a href="#域名服务器" class="headerlink" title="域名服务器"></a>域名服务器</h2><p>上面提到一个概念叫做<strong>根域名服务器。</strong>那么，什么是域名服务器，什么是根域名服务器呢？ 为什么需要域名？</p>
+<h3 id="域名"><a href="#域名" class="headerlink" title="域名"></a>域名</h3><p>大家都知道，点分式的 IP 地址由 4 段数字和 3 的英文句点组成，比如 192.168.125.47，这样的地址有点不好记忆，如果换成 foobar.com 这样的域名就会比较好记忆了。而映射域名和 IP 地址之间关系的就是域名服务器了。</p>
+<h3 id="域名服务器-1"><a href="#域名服务器-1" class="headerlink" title="域名服务器"></a>域名服务器</h3><p>域名服务器是通过一个表来记录域名和 IP 的映射关系的，表中大概有四个字段：域名，class，记录类型以及响应数据</p>
+<ul>
+<li><strong>域名</strong>：显而易见，这个字段是记录需要查找的域名的名字的。</li>
+<li><strong>class</strong>：用来识别网络的信息，比如互联网是用 IN 来表示的（现在似乎也只有互联网了）。</li>
+<li><strong>记录类型</strong>：用来表示域名对用何种类型的记录。比如，如果域名对应的是某个 IP，那么，它的记录类型就是 A (address)。除了 A 记录之外，还有很多其他的记录类型，大家可以通过该 <a href="https://en.wikipedia.org/wiki/List_of_DNS_record_types" target="_blank" rel="noopener">WIKI</a> 了解。</li>
+<li><strong>响应数据</strong>：该字段则是表示返回给客户端的对应信息。比如，通过域名访问本博客的话，返回的就是本博客的地址了。</li>
+</ul>
+<h3 id="域名的层级结构"><a href="#域名的层级结构" class="headerlink" title="域名的层级结构"></a>域名的层级结构</h3><p>那么，根域名服务器又是什么呢？大家可能会想到，如果我把所有的域名映射信息都放在本地，那么不就不需要复杂的域名查询流程了吗？但是，互联网上的域名实在是太多了，不可能放在一台服务器上的，于是就有了分层的域名结构，而不同分层的域名信息就可以放在不同的服务器上了（虽然也可以放在同一台服务器上）。比如，本博客的 <a href="http://www.tech-seeker.cn" target="_blank" rel="noopener">www.tech-seeker.cn</a> 就分为四个层级，分别是 www 域、tech-seeker 域、cn 域以及根域。大家可能会疑惑：前面三个域好理解，根域怎么又是怎么回事？其实，一个完整的域名是以英文句点结尾的，如：<a href="http://www.tech-seeker.cn" target="_blank" rel="noopener">www.tech-seeker.cn</a>. 。这个英文句点就是代表根域，但是通常都会将其省略。</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>当设备访问某个域名时，它会向最近的 dns 服务器发起查询。最近的 dns 服务器找不到对用的域名信息的时候，它就会向根域名服务器发起查询，然后，根域名服务器会根据域名的分层来查找对应的域名信息。然后返回给最近的 dns 服务器，dns服务器会将域名信息缓存在本地并且返回给发起访问的设备。</p>
+<p>这是我第一次发表技术博客，可能还是有点杂乱，后面会保持至少一周一篇的节奏分享工作或者学习上的所得和疑问。希望能在分享的同时，更加深刻地巩固自己的所得。</p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>加载评论需要在浏览器启用 JavaScript 脚本支持。</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="http://github.com/loojee">项目</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#浏览器如何找到域名对应的-IP"><span class="toc-number">1.</span> <span class="toc-text">浏览器如何找到域名对应的 IP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#域名服务器"><span class="toc-number">2.</span> <span class="toc-text">域名服务器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#域名"><span class="toc-number">2.1.</span> <span class="toc-text">域名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#域名服务器-1"><span class="toc-number">2.2.</span> <span class="toc-text">域名服务器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#域名的层级结构"><span class="toc-number">2.3.</span> <span class="toc-text">域名的层级结构</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#小结"><span class="toc-number">3.</span> <span class="toc-text">小结</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://tech-seeker.cn/2019/03/31/初探域名解析/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://tech-seeker.cn/2019/03/31/初探域名解析/&text=初探域名解析"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://tech-seeker.cn/2019/03/31/初探域名解析/&title=初探域名解析"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://tech-seeker.cn/2019/03/31/初探域名解析/&is_video=false&description=初探域名解析"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=初探域名解析&body=Check out this article: http://tech-seeker.cn/2019/03/31/初探域名解析/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://tech-seeker.cn/2019/03/31/初探域名解析/&title=初探域名解析"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://tech-seeker.cn/2019/03/31/初探域名解析/&title=初探域名解析"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://tech-seeker.cn/2019/03/31/初探域名解析/&title=初探域名解析"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://tech-seeker.cn/2019/03/31/初探域名解析/&title=初探域名解析"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://tech-seeker.cn/2019/03/31/初探域名解析/&name=初探域名解析&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2019 Jie Lu
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="http://github.com/loojee">项目</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+    <!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'tech-seeker';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+
+</body>
+</html>
