@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="redigo是golang的一个操作redis的第三方库，之所以选择这个库，是因为它的文档十分丰富，操作起来也比较简单。一个典型的redigo的使用如下所示： 1234567891011121314151617181920package mainimport (	&quot;github.com/gomodule/redigo/redis&quot;	&quot;log&quot;)func main() &amp;#123;	conn, er">
+<meta name="keywords" content="读源码,golang">
+<meta property="og:type" content="article">
+<meta property="og:title" content="读源码:redigo为什么多线程不安全">
+<meta property="og:url" content="http://tech-seeker.cn/2019/06/16/读源码-redigo为什么多线程不安全/index.html">
+<meta property="og:site_name" content="TECH-SEEKER">
+<meta property="og:description" content="redigo是golang的一个操作redis的第三方库，之所以选择这个库，是因为它的文档十分丰富，操作起来也比较简单。一个典型的redigo的使用如下所示： 1234567891011121314151617181920package mainimport (	&quot;github.com/gomodule/redigo/redis&quot;	&quot;log&quot;)func main() &amp;#123;	conn, er">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-06-17T15:25:11.995Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="读源码:redigo为什么多线程不安全">
+<meta name="twitter:description" content="redigo是golang的一个操作redis的第三方库，之所以选择这个库，是因为它的文档十分丰富，操作起来也比较简单。一个典型的redigo的使用如下所示： 1234567891011121314151617181920package mainimport (	&quot;github.com/gomodule/redigo/redis&quot;	&quot;log&quot;)func main() &amp;#123;	conn, er">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>读源码:redigo为什么多线程不安全</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="http://github.com/loojee">项目</a></li>
+        
+      </ul>
+    </span>
+    <br>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" href="/2019/06/09/博客从-wordpress-迁移到-github-pages/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://tech-seeker.cn/2019/06/16/读源码-redigo为什么多线程不安全/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://tech-seeker.cn/2019/06/16/读源码-redigo为什么多线程不安全/&text=读源码:redigo为什么多线程不安全"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://tech-seeker.cn/2019/06/16/读源码-redigo为什么多线程不安全/&title=读源码:redigo为什么多线程不安全"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://tech-seeker.cn/2019/06/16/读源码-redigo为什么多线程不安全/&is_video=false&description=读源码:redigo为什么多线程不安全"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=读源码:redigo为什么多线程不安全&body=Check out this article: http://tech-seeker.cn/2019/06/16/读源码-redigo为什么多线程不安全/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://tech-seeker.cn/2019/06/16/读源码-redigo为什么多线程不安全/&title=读源码:redigo为什么多线程不安全"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://tech-seeker.cn/2019/06/16/读源码-redigo为什么多线程不安全/&title=读源码:redigo为什么多线程不安全"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://tech-seeker.cn/2019/06/16/读源码-redigo为什么多线程不安全/&title=读源码:redigo为什么多线程不安全"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://tech-seeker.cn/2019/06/16/读源码-redigo为什么多线程不安全/&title=读源码:redigo为什么多线程不安全"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://tech-seeker.cn/2019/06/16/读源码-redigo为什么多线程不安全/&name=读源码:redigo为什么多线程不安全&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        读源码:redigo为什么多线程不安全
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">TECH-SEEKER</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2019-06-16T13:05:45.000Z" itemprop="datePublished">2019-06-16</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/golang/">golang</a>, <a class="tag-link" href="/tags/读源码/">读源码</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>redigo是golang的一个操作redis的第三方库，之所以选择这个库，是因为它的文档十分丰富，操作起来也比较简单。一个典型的redigo的使用如下所示：</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"github.com/gomodule/redigo/redis"</span></span><br><span class="line">	<span class="string">"log"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	conn, err := redis.Dial(<span class="string">"tcp"</span>, <span class="string">"192.168.1.2:6379"</span>)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatalf(<span class="string">"dial redis failed :%v\n"</span>, err)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	result, err := redis.String(conn.Do(<span class="string">"SET"</span>, <span class="string">"hello"</span>, <span class="string">"world"</span>))</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatalln(err)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	log.Println(result)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里需要注意的一点是，redis 默认是只能本机访问的，可以通过修改 /etc/redis/redis.conf 中的 bind 来实现远程访问，这里我将 bind 改为了服务所在机器的 IP 。</p>
+<p>虽然，redigo 的使用十分简单，但是，在它的文档中也指出了一点需要我们特别注意，我们可以在 <a href="https://godoc.org/github.com/gomodule/redigo/redis#hdr-Concurrency" target="_blank" rel="noopener">godoc</a> 中看到原文：</p>
+<blockquote>
+<p>Connections support one concurrent caller to the Receive method and one concurrent caller to the Send and Flush methods. No other concurrency is supported including concurrent calls to the Do and Close methods.</p>
+</blockquote>
+<p>翻译过来就是：</p>
+<blockquote>
+<p>连接支持同时运行单个执行体调用 Receive 和 单个执行体调用 Send 和 Flush 方法。不支持并发调用 Do 和 Close 方法。</p>
+</blockquote>
+<p>本着程序员追根究底的好奇心，我看了一下 redigo 实现 Do 方法的源码，大致弄清楚了为什么 Do 函数是并发不安全的了。它的部分源码如下所示：</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(c *conn)</span> <span class="title">Do</span><span class="params">(cmd <span class="keyword">string</span>, args ...<span class="keyword">interface</span>&#123;&#125;)</span> <span class="params">(<span class="keyword">interface</span>&#123;&#125;, error)</span></span> &#123;</span><br><span class="line">	<span class="keyword">return</span> c.DoWithTimeout(c.readTimeout, cmd, args...)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(c *conn)</span> <span class="title">DoWithTimeout</span><span class="params">(readTimeout time.Duration, cmd <span class="keyword">string</span>, args ...<span class="keyword">interface</span>&#123;&#125;)</span> <span class="params">(<span class="keyword">interface</span>&#123;&#125;, error)</span></span> &#123;</span><br><span class="line">	c.mu.Lock()</span><br><span class="line">	pending := c.pending</span><br><span class="line">	c.pending = <span class="number">0</span></span><br><span class="line">	c.mu.Unlock()</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> cmd == <span class="string">""</span> &amp;&amp; pending == <span class="number">0</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">nil</span>, <span class="literal">nil</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> c.writeTimeout != <span class="number">0</span> &#123;</span><br><span class="line">		c.conn.SetWriteDeadline(time.Now().Add(c.writeTimeout))</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> cmd != <span class="string">""</span> &#123;</span><br><span class="line">		<span class="keyword">if</span> err := c.writeCommand(cmd, args); err != <span class="literal">nil</span> &#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="literal">nil</span>, c.fatal(err)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> err := c.bw.Flush(); err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">nil</span>, c.fatal(err)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">var</span> deadline time.Time</span><br><span class="line">	<span class="keyword">if</span> readTimeout != <span class="number">0</span> &#123;</span><br><span class="line">		deadline = time.Now().Add(readTimeout)</span><br><span class="line">	&#125;</span><br><span class="line">	c.conn.SetReadDeadline(deadline)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> cmd == <span class="string">""</span> &#123;</span><br><span class="line">		reply := <span class="built_in">make</span>([]<span class="keyword">interface</span>&#123;&#125;, pending)</span><br><span class="line">		<span class="keyword">for</span> i := <span class="keyword">range</span> reply &#123;</span><br><span class="line">			r, e := c.readReply()</span><br><span class="line">			<span class="keyword">if</span> e != <span class="literal">nil</span> &#123;</span><br><span class="line">				<span class="keyword">return</span> <span class="literal">nil</span>, c.fatal(e)</span><br><span class="line">			&#125;</span><br><span class="line">			reply[i] = r</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> reply, <span class="literal">nil</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">var</span> err error</span><br><span class="line">	<span class="keyword">var</span> reply <span class="keyword">interface</span>&#123;&#125;</span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt;= pending; i++ &#123;</span><br><span class="line">		<span class="keyword">var</span> e error</span><br><span class="line">		<span class="keyword">if</span> reply, e = c.readReply(); e != <span class="literal">nil</span> &#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="literal">nil</span>, c.fatal(e)</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> e, ok := reply.(Error); ok &amp;&amp; err == <span class="literal">nil</span> &#123;</span><br><span class="line">			err = e</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> reply, err</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(c *conn)</span> <span class="title">writeCommand</span><span class="params">(cmd <span class="keyword">string</span>, args []<span class="keyword">interface</span>&#123;&#125;)</span> <span class="title">error</span></span> &#123;</span><br><span class="line">	c.writeLen(<span class="string">'*'</span>, <span class="number">1</span>+<span class="built_in">len</span>(args))</span><br><span class="line">	<span class="keyword">if</span> err := c.writeString(cmd); err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> err</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> _, arg := <span class="keyword">range</span> args &#123;</span><br><span class="line">		<span class="keyword">if</span> err := c.writeArg(arg, <span class="literal">true</span>); err != <span class="literal">nil</span> &#123;</span><br><span class="line">			<span class="keyword">return</span> err</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面三个函数实现在 redigo 的 redis 包的 conn.go 文件中，在 DoWithTimeout 方法中，我们可以看到它是顺序执行数据的发送和相应的接收的，而且，函数中还是没有加锁的。虽然，golang 的 TCP 发送底层实现是有加锁的，可以保证一次写操作的数据中，不会有另一次写操作的数据插入，但是，在这个 DoWithTimeout 的实现中，我们还是能隐约闻到一种不安全的味道。</p>
+<p>我们把焦点锁定在 writeCommand 这个方法上。从它的实现，我们可以了解到，它的作用主要是在 for … range 中将 redis 的命令发送到 redis-server 执行。而这个函数也是没有加锁的，在实际使用的过程中，如果有几个并发的执行体在执行 Do 函数，那么，几个执行体的命令可能会在 for … range 中穿插在一起，从而产生错误。</p>
+<p>redigo 的作者推荐我们在并发时使用连接池来保证安全，redigo 的连接池的实现将会在下次一起阅读。</p>
+<p>读源码可以了解到开源作者实现开源作品的思路，还可以开拓视野，认识到一些更好的编程技巧，这个习惯可是要好好坚持啊。</p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>加载评论需要在浏览器启用 JavaScript 脚本支持。</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="http://github.com/loojee">项目</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://tech-seeker.cn/2019/06/16/读源码-redigo为什么多线程不安全/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://tech-seeker.cn/2019/06/16/读源码-redigo为什么多线程不安全/&text=读源码:redigo为什么多线程不安全"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://tech-seeker.cn/2019/06/16/读源码-redigo为什么多线程不安全/&title=读源码:redigo为什么多线程不安全"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://tech-seeker.cn/2019/06/16/读源码-redigo为什么多线程不安全/&is_video=false&description=读源码:redigo为什么多线程不安全"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=读源码:redigo为什么多线程不安全&body=Check out this article: http://tech-seeker.cn/2019/06/16/读源码-redigo为什么多线程不安全/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://tech-seeker.cn/2019/06/16/读源码-redigo为什么多线程不安全/&title=读源码:redigo为什么多线程不安全"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://tech-seeker.cn/2019/06/16/读源码-redigo为什么多线程不安全/&title=读源码:redigo为什么多线程不安全"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://tech-seeker.cn/2019/06/16/读源码-redigo为什么多线程不安全/&title=读源码:redigo为什么多线程不安全"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://tech-seeker.cn/2019/06/16/读源码-redigo为什么多线程不安全/&title=读源码:redigo为什么多线程不安全"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://tech-seeker.cn/2019/06/16/读源码-redigo为什么多线程不安全/&name=读源码:redigo为什么多线程不安全&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2019 Jie Lu
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="http://github.com/loojee">项目</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+    <!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'tech-seeker';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+
+</body>
+</html>
