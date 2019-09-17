@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="本文是对 redis 官方文档 Redis latency problems troubleshooting 的翻译，诸位看官可结合原文食用。  这个文档将会帮助你理解在使用 Redis 遇到延迟问题时发生了什么。 在这个上下文中，延迟指的是从客户端发送命令和接收到应答之间所消耗的时间。通常情况下，Redis 处理命令的时间十分短，在亚微妙之间，但是某些情况会导致高延迟。 我很忙，给我清单接下来">
+<meta name="keywords" content="redis,学习笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="译-redis延迟问题排查">
+<meta property="og:url" content="http://tech-seeker.cn/2019/09/15/译-redis延迟问题排查/index.html">
+<meta property="og:site_name" content="TECH-SEEKER">
+<meta property="og:description" content="本文是对 redis 官方文档 Redis latency problems troubleshooting 的翻译，诸位看官可结合原文食用。  这个文档将会帮助你理解在使用 Redis 遇到延迟问题时发生了什么。 在这个上下文中，延迟指的是从客户端发送命令和接收到应答之间所消耗的时间。通常情况下，Redis 处理命令的时间十分短，在亚微妙之间，但是某些情况会导致高延迟。 我很忙，给我清单接下来">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/LooJee/medias/master/images/20190915215506.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/LooJee/medias/master/images/20190915220737.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/LooJee/medias/master/images/20190917204835.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/LooJee/medias/master/images/20190917205312.png">
+<meta property="og:updated_time" content="2019-09-17T15:14:07.429Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="译-redis延迟问题排查">
+<meta name="twitter:description" content="本文是对 redis 官方文档 Redis latency problems troubleshooting 的翻译，诸位看官可结合原文食用。  这个文档将会帮助你理解在使用 Redis 遇到延迟问题时发生了什么。 在这个上下文中，延迟指的是从客户端发送命令和接收到应答之间所消耗的时间。通常情况下，Redis 处理命令的时间十分短，在亚微妙之间，但是某些情况会导致高延迟。 我很忙，给我清单接下来">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/LooJee/medias/master/images/20190915215506.png">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>译-redis延迟问题排查</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="http://github.com/loojee">项目</a></li>
+        
+      </ul>
+    </span>
+    <br>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" href="/2019/09/13/初识golang中的反射/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://tech-seeker.cn/2019/09/15/译-redis延迟问题排查/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://tech-seeker.cn/2019/09/15/译-redis延迟问题排查/&text=译-redis延迟问题排查"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://tech-seeker.cn/2019/09/15/译-redis延迟问题排查/&title=译-redis延迟问题排查"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://tech-seeker.cn/2019/09/15/译-redis延迟问题排查/&is_video=false&description=译-redis延迟问题排查"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=译-redis延迟问题排查&body=Check out this article: http://tech-seeker.cn/2019/09/15/译-redis延迟问题排查/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://tech-seeker.cn/2019/09/15/译-redis延迟问题排查/&title=译-redis延迟问题排查"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://tech-seeker.cn/2019/09/15/译-redis延迟问题排查/&title=译-redis延迟问题排查"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://tech-seeker.cn/2019/09/15/译-redis延迟问题排查/&title=译-redis延迟问题排查"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://tech-seeker.cn/2019/09/15/译-redis延迟问题排查/&title=译-redis延迟问题排查"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://tech-seeker.cn/2019/09/15/译-redis延迟问题排查/&name=译-redis延迟问题排查&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#我很忙，给我清单"><span class="toc-number">1.</span> <span class="toc-text">我很忙，给我清单</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#测量延迟"><span class="toc-number">2.</span> <span class="toc-text">测量延迟</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用-Redis-内置的延迟监控子系统"><span class="toc-number">3.</span> <span class="toc-text">使用 Redis 内置的延迟监控子系统</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#延迟基准线"><span class="toc-number">4.</span> <span class="toc-text">延迟基准线</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#受网络和通讯影响的延迟"><span class="toc-number">5.</span> <span class="toc-text">受网络和通讯影响的延迟</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis-的单线程特性"><span class="toc-number">6.</span> <span class="toc-text">Redis 的单线程特性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#慢查询导致的延迟"><span class="toc-number">7.</span> <span class="toc-text">慢查询导致的延迟</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#由-fork-引发的延迟"><span class="toc-number">8.</span> <span class="toc-text">由 fork 引发的延迟</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#不同系统上-fork-的时间"><span class="toc-number">9.</span> <span class="toc-text">不同系统上 fork 的时间</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#transparent-huge-pages引起的响应延迟"><span class="toc-number">10.</span> <span class="toc-text">transparent huge pages引起的响应延迟</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#页面交换（操作系统分页）引起的延迟"><span class="toc-number">11.</span> <span class="toc-text">页面交换（操作系统分页）引起的延迟</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#由于AOF和磁盘I-O导致的延迟"><span class="toc-number">12.</span> <span class="toc-text">由于AOF和磁盘I / O导致的延迟</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#到期产生的延迟"><span class="toc-number">13.</span> <span class="toc-text">到期产生的延迟</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis-软件看门狗"><span class="toc-number">14.</span> <span class="toc-text">Redis 软件看门狗</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        译-redis延迟问题排查
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">TECH-SEEKER</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2019-09-15T11:21:48.000Z" itemprop="datePublished">2019-09-15</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/redis/">redis</a>, <a class="tag-link" href="/tags/学习笔记/">学习笔记</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <blockquote>
+<p>本文是对 redis 官方文档 <a href="https://redis.io/topics/latency" target="_blank" rel="noopener">Redis latency problems troubleshooting</a> 的翻译，诸位看官可结合原文食用。</p>
+</blockquote>
+<p>这个文档将会帮助你理解在使用 Redis 遇到延迟问题时发生了什么。</p>
+<p>在这个上下文中，<em>延迟</em>指的是从客户端发送命令和接收到应答之间所消耗的时间。通常情况下，Redis 处理命令的时间十分短，在亚微妙之间，但是某些情况会导致高延迟。</p>
+<h2 id="我很忙，给我清单"><a href="#我很忙，给我清单" class="headerlink" title="我很忙，给我清单"></a>我很忙，给我清单</h2><p>接下来的内容对于以低延迟方式运行 Redis 是非常重要的。然而，我理解我们都是很忙的，所以就以快速清单开始吧。如果你在尝试了下面这些步骤失败了，请回来阅读完整的文档。</p>
+<ol>
+<li>确认你运行慢查询命令阻塞了服务。使用 Redis <a href="https://redis.io/commands/slowlog" target="_blank" rel="noopener">慢日志功能</a>确认这一点。</li>
+<li>对于 EC2 用户，确认你在基于现代的 EC2 实例上使用 HVM，比如 m3.medium。否则 fork() 会非常慢。</li>
+<li>内核的 <strong>Transparent huge pages</strong> 必须请用。使用 echo never &gt; /sys/kernel/mm/transparent_hugepage/enabled 来禁用他们，然后重启 Redis 进程。</li>
+<li>如果你使用虚拟机，那么即使你没有对 Redis 做任何操作也可能会有内部延迟。使用 ./redis-cli –intrinsic-latency 100 来在你的运行环境中检查最小延迟。注意：你需要在服务端而不是客户端运行这个命令。</li>
+<li>启用 Redis 的 <a href="https://redis.io/topics/latency-monitor" target="_blank" rel="noopener">Latency monitor</a> 功能，这是为了得到你的 Redis 实例中的延迟事件和原因的可读数据。</li>
+</ol>
+<p>通常，使用下表来进行持久化和延迟/性能之间的权衡，从更好的安全性到更好的延迟排序。</p>
+<ol>
+<li>AOF + fsync always：这会非常慢，你应该只在你知道自己在做什么的情况下使用。</li>
+<li>AOF + fsync every second：这会是一个很好的折衷方案。</li>
+<li>AOF + fsync every second + no-appendfsync-on-rewrite 选项设置为 yes：这也是一个折衷方案，但它避免了在重写时执行 fsync ，降低了磁盘压力。</li>
+<li>AOF + fsync never：这个方案将 fsync 交给了内核，得到了更小的磁盘压力和延迟峰值风险。</li>
+<li>RDB：这个方案你将会有更广泛的权衡空间，它取决于你如何触发 RDB 持久化。</li>
+</ol>
+<p>现在，我们花 15 分钟来了解下细节…</p>
+<h2 id="测量延迟"><a href="#测量延迟" class="headerlink" title="测量延迟"></a>测量延迟</h2><p>如果你遇到了延迟问题，你可能知道如何在你的程序中测量延迟，或者延迟现象十分明显。其实，redis-cli 可以在毫秒级内测量 Redis 服务的延迟，只要使用下面的命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis-cli --latency -h `host` -p `port`</span><br></pre></td></tr></table></figure>
+
+<h2 id="使用-Redis-内置的延迟监控子系统"><a href="#使用-Redis-内置的延迟监控子系统" class="headerlink" title="使用 Redis 内置的延迟监控子系统"></a>使用 Redis 内置的延迟监控子系统</h2><p>从 Redis 2.8.13 开始，Redis 提供了延迟监控功能，它通过对不同执行路径（译者注：这个概念可以在延迟监控文档查看）采样来检测服务阻塞的位置。这将会使调试本文档所说明的问题更加方便，所以我们建议尽快启用延迟监控。请查看<a href="https://redis.io/topics/latency-monitor" target="_blank" rel="noopener">延迟监控文档</a>。</p>
+<p>延迟监控采样和报告功能会使你更方便的找出 Redis 系统延迟的原因，不过我们还是建议你详细阅读本文以更好的理解 Redis 和延迟尖峰。</p>
+<h2 id="延迟基准线"><a href="#延迟基准线" class="headerlink" title="延迟基准线"></a>延迟基准线</h2><p>有一种延迟本身就是你运行 Redis 的环境的一部分，即操作系统内核以及–如果你使用了虚拟化–管理程序造成的延迟。</p>
+<p>这种延迟无法消除，学习它是十分重要的，因为它是基准线，换句话说，因为内核和管理程序的存在，你不可能使 Redis 的延迟比在你的环境中运行的程序的延迟更低。</p>
+<p>我们将这种延迟称为内部延迟，redis-cli 从 Redis 2.8.7 开始就可以测量它了。这是一个在基于 Linux 3.11.0 的入门级服务器上运行的例子。</p>
+<p>注意：参数 100 是测试执行的秒数。执行测试的时间越长，我们越有可能发现延迟峰值。100 秒通常足够了，但是你可能想要运行多次不同时长的测试。请注意这个测试是 CPU 密集型的，将可能会使你的系统的一个核满载。</p>
+<p><img src="https://raw.githubusercontent.com/LooJee/medias/master/images/20190915215506.png" alt></p>
+<p>注意： redis-cli 在这个例子中需要运行在你运行 Redis 或者计划运行 Redis 的服务器上，而不是在客户端。在这个特殊模式下 redis-cli 根本不会连接 Redis 服务：它只是尝试测试内核不提供 CPU 时间去运行 redis-cli 进程自己的最大时长。</p>
+<p>在上面的例子中，系统的内部延迟只是 0.115毫秒（或 115 微妙），这是一个好的消息，但是请记住，内部延迟可能会随运行时间变化和变化，这取决与系统的负载。</p>
+<p>虚拟化环境表现将会差点，特别是当高负载或者受其他虚拟化环境影响。下面是在 Linode 4096 实例上运行 Redis 和 Apache 的结果：</p>
+<p><img src="https://raw.githubusercontent.com/LooJee/medias/master/images/20190915220737.png" alt></p>
+<p>这里我们有 9.7 毫秒的内部延迟：这意味着我们不能要求 Redis 做的比这个更好了。然而，在负载更高或有其它邻居的不同虚拟化环境中运行时，可以更容易得到更差的结果。我们可能在正常运行的系统中得到 40 毫秒的测试结果。</p>
+<h2 id="受网络和通讯影响的延迟"><a href="#受网络和通讯影响的延迟" class="headerlink" title="受网络和通讯影响的延迟"></a>受网络和通讯影响的延迟</h2><p>客户端通过 TCP/IP 或者 Unix 域来连接到 Redis。1 Gbit/s 的网络的典型延迟是 200 微妙，使用 Unix 域 socket 的延迟可能低至 30 微妙。它实际上取决于你的网络和系统硬件。在通讯之上，系统添加了更多的延迟（由于线程调度，CPU 缓存，NUMA 配置，等等）。系统在虚拟环境中造成的延迟明显高于物理机。</p>
+<p>结论是，即使 Redis 处理大部分命令只花费亚微秒级的时间，客户端和服务端之间大量往返的命令将必须为网络和系统相关延迟付出代价。</p>
+<p>因此，高效的客户端会将多个命令组成流水线来减少往返的次数。这被服务器和大多数客户端支持。批量操作比如 MSET/MGET 也是为了这个目的。从 Redis 2.4 开始，一些命令还支持所有数据类型的可变参数。</p>
+<p>这里是一些准则：</p>
+<ol>
+<li>如果负担得起，使用物理机而不是 VM 来托管服务。</li>
+<li>不要总是连接和断开连接（特不是基于 web 的应用）。尽可能地保持连接。</li>
+<li>如果你的客户端和服务端在同一台机器上，使用 Unix 域套接字。</li>
+<li>使用批量命令（MSET/MGET），或使用带可变参数的命令，而不是使用流水线操作。</li>
+<li>比起一系列的单独命令，更应该选择流水线操作（如果可能）。</li>
+<li>Redis 支持 Lua服务器端脚本，以涵盖不适合原始流水线操作的情况（例如，当命令的结果是下一个命令的输入时）。</li>
+</ol>
+<p>在 Linux，用户可以通过进程设置（taskset），cgroups，实时优先级（chrt），NUMA 设置，或者使用低延迟内核等来实现更好的延迟。请注意 Redis 并不适合绑定在单个 CPU 核心上。Redis 会 fork 后台任务像 bgsave 或 AOF，这操作会十分消耗 CPU。这些任务必须永远不和主进程在同一个核心上运行。</p>
+<p>在大多环境中，这些系统级的优化不是必须的。只有当你需要它们或者熟悉它们的时候再去做这些操作。</p>
+<h2 id="Redis-的单线程特性"><a href="#Redis-的单线程特性" class="headerlink" title="Redis 的单线程特性"></a>Redis 的单线程特性</h2><p>Redis 被设计为大部分情况下使用单线程。这意味着一个线程处理所有客户端的请求，它使用了多路复用的技术。这意味着 Redis 在每个是简单都只处理一个请求，所以所有的请求都是按顺序处理的。这很像 Node.js 的工作方式。然而，这两个产品通常都不会被认为很慢。这是因为他们处理任务的时间很短，不过主要是因为它们设计为不在系统调用阻塞，特别是从套接字读取数据或者往套接字写数据的时候。</p>
+<p>我说 Redis 大多只用单线程，是因为从 Redis 2.4 开始，我们使用多线程去在后台执行一些慢 I/O 操作，主要是和磁盘 I/O 相关，但是这不改变 Redis 使用单线程处理所有请求的事实。</p>
+<h2 id="慢查询导致的延迟"><a href="#慢查询导致的延迟" class="headerlink" title="慢查询导致的延迟"></a>慢查询导致的延迟</h2><p>一个单线程的后果是当有一个慢请求时，所有其它的客户端将会等待它完成。当执行像 GET 或 SET 或 LPUSH 这样的通常命令时是没有问题的，这些命令的执行时间都是常数的（非常短）。然而，有几个命令操作了大量的元素，像 SORT，LREM，SUNION 和其它的命令。例如，去两个大集合的交集会花费非常多的时间。</p>
+<p>所有命令的算法复杂度都有文档记录。一个好的实践是，当你使用不熟悉的命令时先系统地测试一下它。</p>
+<p>如果你有延迟的顾虑，那么你不应该用慢查询处理有大量元素的值，或者你应该运行 Redis 的副本去运行慢查询。</p>
+<p>可以使用 Redis 的<a href="https://redis.io/commands/slowlog" target="_blank" rel="noopener">慢日志功能</a>来监控慢查询。</p>
+<p>另外，你可以使用你喜欢的进程监控程序（top，htop，prstat，等等）去快速的检查主 Redis 进程 所消耗的 CPU。如果它很高，但流量却不高，那么它通常表示正在执行慢查询。</p>
+<p>重点：一个非常常见的由执行慢查询导致延迟的原因是在生产环境执行 KEYS 命令。KEYS 命令在文档中指出只能用于调试目的。从 Redis 2.8 开始，引入了一些新的命令来迭代键空间和其它大集合，请查看 <a href="https://redis.io/commands/scan" target="_blank" rel="noopener">SCAN</a>，<a href="https://redis.io/commands/sscan" target="_blank" rel="noopener">SSCAN</a>，<a href="https://redis.io/commands/hscan" target="_blank" rel="noopener">HSCAN</a> 和 <a href="https://redis.io/commands/zscan" target="_blank" rel="noopener">ZSCAN</a> 命令来获取更多的信息。</p>
+<h2 id="由-fork-引发的延迟"><a href="#由-fork-引发的延迟" class="headerlink" title="由 fork 引发的延迟"></a>由 fork 引发的延迟</h2><p>为了在后台生成 RDB 文件或者在启用 AOF 持久化时重写 AOF 文件，Redis 必须 fork 一个进程。fork 操作（在主线程运行）会引起延迟。fork 是在类 Unix 系统中一个开销很高的操作，因为它涉及到复制大量与进程关联的对象。对于和虚拟内存相关联的页表尤其如此。</p>
+<p>例如，在 Linux/AMD64 系统，内存被分为每页 4 kB。为了将虚拟地址转换为物理地址，每个进程保存了一个页表（实际是一棵树），它至少包含一个指向进程的每页地址空间的指针。所以，一个拥有 24 GB 的 Redis 实例需要 24 GB/4 KB*8 = 48 MB 的页表。</p>
+<p>当 bgsave 执行的时候，实例将会被 fork，这将创建和拷贝 48 MB 的内存。它会花费时间和 CPU，特别是在虚拟机上创建和初始化大页面将会是非常大的开销。</p>
+<h2 id="不同系统上-fork-的时间"><a href="#不同系统上-fork-的时间" class="headerlink" title="不同系统上 fork 的时间"></a>不同系统上 fork 的时间</h2><p>现代硬件拷贝页表非常快，除了 Xen。这个问题不是出在 Xen 虚拟化，而是 Xen 本身。例如，使用 VMware 或 Virtual Box 不会导致缓慢的 fork 时间。下表是比较不同的 Redis 实例 fork 所消耗的时间。数据来自于执行BGSAVE，并观察INFO命令输出的<code>latest_fork_usec</code>信息。</p>
+<p>然而，好消息是基于 EC2 HVM 的实例执行 fork 操作的表现很好，几乎和在物理机上执行差不多，所以使用 m3.medium （或高性能）的实例将会得到更好的结果。</p>
+<ol>
+<li>运行在 VMware 上的虚拟 Linux 系统 fork 6.0 GB 的 RSS 花费 77毫秒（每 GB 12.8 毫秒）。</li>
+<li>Linux 运行在物理机上（未知硬件）fork 6.1 GB 的 RSS 花费了 80 毫秒（每 GB 13.1 毫秒）。</li>
+<li>Linux 运行在物理机上（Xeon @ 2.27 Ghz）fork 6.9 GB 的 RSS 花费 62 毫秒（每 GB 9 毫秒）。</li>
+<li>运行在 6sync 上的 Linux 虚拟机（KVM）fork 360 MB 的 RSS 花费 8.2 毫秒（每 GB 23.3 毫秒）。</li>
+<li>运行在老版本 EC2 上的 Linux 虚拟机（Xen）fork 6.1 GB 的 RSS 花费 1460 毫秒（每 GB 10 毫秒）。</li>
+<li>运行在新版本 EC2 上的 Linux 虚拟机（Xen）fork 1 GB 的 RSS 花费 10 毫秒（每 GB 10 毫秒）。</li>
+<li>运行在 Linode 上的 Linux 虚拟机（Xen）fork 0.9 GB 的 RSS 花费 382 毫秒（每 GB 424 毫秒）。</li>
+</ol>
+<p>正如您所看到的，在 Xen 上运行的某些虚拟机的性能损失介于一个数量级到两个数量级之间。对于 EC2 用户，建议很简单：使用基于 HVM 的现代实例。</p>
+<h2 id="transparent-huge-pages引起的响应延迟"><a href="#transparent-huge-pages引起的响应延迟" class="headerlink" title="transparent huge pages引起的响应延迟"></a>transparent huge pages引起的响应延迟</h2><p>很不幸，如果 Linux 内核开启了 transparent huge pages 功能，Redis 将会在调用 fork 来持久化到磁盘时造成非常大的延迟。大内存页导致了下面这些问题：</p>
+<ol>
+<li>当调用fork时，共享大内存页的两个进程将被创建。</li>
+<li>在一个忙碌的实例上，一些事件循环就将导致访问上千个内存页，导致几乎整个进程执行写时复制。</li>
+<li>这将导致高响应延迟和大内存的使用。</li>
+</ol>
+<p>请确认使用以下命令禁用 transparent huge pages：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo never &gt; /sys/kernel/mm/transparent_hugepage/enabled</span><br></pre></td></tr></table></figure>
+
+<h2 id="页面交换（操作系统分页）引起的延迟"><a href="#页面交换（操作系统分页）引起的延迟" class="headerlink" title="页面交换（操作系统分页）引起的延迟"></a>页面交换（操作系统分页）引起的延迟</h2><p>Linux（还有很多其它现代操作系统）可以将内存页从内存缓存到磁盘，或从磁盘读入内存，这是为了更有效的使用系统内存。</p>
+<p>如果 Redis 页被内核从内存保存到了交换文件，当保存在这个内存页中的数据被 Redis 使用到的时候（比如访问保存在这个页中的键）内核为了将这页移动到主存，会停止 Redis 进程。访问随机 I/O 是一个缓慢的操作（和访问在内存中的页相比）而且 Redis 客户端将会经历异常的延迟。</p>
+<p>内核将 Redis 内存页保存到磁盘主要有三个原因：</p>
+<ol>
+<li>系统正在内存压力之下，因为运行的进程要求了比可用内存更多的物理内存。最简单的例子是 Redis 使用了比可用内存更多的内存。</li>
+<li>Redis 实例的数据集合或一部分数据集合已经基本完全空闲（从未被客户端访问），所以内核可能会将空闲的内存页保存到磁盘。这个问题十分罕见，因为即使是一个不是特别慢的实例通常也会访问所有的内存页，强迫内核将所有的页保存在内存中。</li>
+<li>系统中的一些进程引发了大量读写 I/O 的操作。因为文件会产生缓存，它会给内核增加文件系统缓存的压力，因此就会产生交换活动。请注意，这包括 Redis RDB 和/或 AOF 线程，它们会产生大文件。</li>
+</ol>
+<p>幸运的是 Linux 提供了好的工具去验证这个问题，所以，最简单的事是当怀疑是交换内存引起延迟时，那就去检查它吧。</p>
+<p>第一件事要做的是检查 Redis 内存交换到磁盘的数量。这之前，你需要获取 Redis 实例的 pid：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> redis-cli info | grep process_id</span><br><span class="line">process_id:5454</span><br></pre></td></tr></table></figure>
+
+<p>现在进入 /proc 目录下该进程的目录：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> cd /proc/5454</span><br></pre></td></tr></table></figure>
+
+<p>你将会在这里找到一个叫做 smaps 的文件，它描述了 Redis 进程的内存布局（假设你使用的是 Linux 2.6.16 以上的系统）。这个文件包含了和我们的进程内存映射相关的非常详细的信息，一个名为 Swap 的字段就是我们所需要的。然而，当 smaps 文件包含了不同的关于 Redis 进程的内存映射之后，它就不是单单一个 swap 字段了（进程的内存布局比一页简单的线性表要远远复杂）。</p>
+<p>因为我们对进程相关的内存交换都感兴趣，所以第一件事要做的是用 grep 得到文件中所有的 Swap 字段：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> cat smaps | grep 'Swap:'</span><br><span class="line">Swap:                  0 kB</span><br><span class="line">Swap:                  0 kB</span><br><span class="line">Swap:                  0 kB</span><br><span class="line">Swap:                  0 kB</span><br><span class="line">Swap:                  0 kB</span><br><span class="line">Swap:                 12 kB</span><br><span class="line">Swap:                156 kB</span><br><span class="line">Swap:                  8 kB</span><br><span class="line">Swap:                  0 kB</span><br><span class="line">Swap:                  0 kB</span><br><span class="line">Swap:                  0 kB</span><br><span class="line">Swap:                  0 kB</span><br><span class="line">Swap:                  0 kB</span><br><span class="line">Swap:                  0 kB</span><br><span class="line">Swap:                  0 kB</span><br><span class="line">Swap:                  0 kB</span><br><span class="line">Swap:                  0 kB</span><br><span class="line">Swap:                  4 kB</span><br><span class="line">Swap:                  0 kB</span><br><span class="line">Swap:                  0 kB</span><br><span class="line">Swap:                  4 kB</span><br><span class="line">Swap:                  0 kB</span><br><span class="line">Swap:                  0 kB</span><br><span class="line">Swap:                  4 kB</span><br><span class="line">Swap:                  4 kB</span><br><span class="line">Swap:                  0 kB</span><br><span class="line">Swap:                  0 kB</span><br><span class="line">Swap:                  0 kB</span><br><span class="line">Swap:                  0 kB</span><br><span class="line">Swap:                  0 kB</span><br></pre></td></tr></table></figure>
+
+<p>如果所有都是 0 KB，或者零散一个 4k 的条目，那么一切都很完美。事实上，在我们的示例中（一个运行 Redis 的网站，每秒服务百余用户）有些条目会显示更多的交换页。为了研究这是否是一个严重的问题，我们更改命令以便打印内存映射的大小：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> cat smaps | egrep '^(Swap|Size)'</span><br><span class="line">Size:                316 kB</span><br><span class="line">Swap:                  0 kB</span><br><span class="line">Size:                  4 kB</span><br><span class="line">Swap:                  0 kB</span><br><span class="line">Size:                  8 kB</span><br><span class="line">Swap:                  0 kB</span><br><span class="line">Size:                 40 kB</span><br><span class="line">Swap:                  0 kB</span><br><span class="line">Size:                132 kB</span><br><span class="line">Swap:                  0 kB</span><br><span class="line">Size:             720896 kB</span><br><span class="line">Swap:                 12 kB</span><br><span class="line">Size:               4096 kB</span><br><span class="line">Swap:                156 kB</span><br><span class="line">Size:               4096 kB</span><br><span class="line">Swap:                  8 kB</span><br><span class="line">Size:               4096 kB</span><br><span class="line">Swap:                  0 kB</span><br><span class="line">Size:                  4 kB</span><br><span class="line">Swap:                  0 kB</span><br><span class="line">Size:               1272 kB</span><br><span class="line">Swap:                  0 kB</span><br><span class="line">Size:                  8 kB</span><br><span class="line">Swap:                  0 kB</span><br><span class="line">Size:                  4 kB</span><br><span class="line">Swap:                  0 kB</span><br><span class="line">Size:                 16 kB</span><br><span class="line">Swap:                  0 kB</span><br><span class="line">Size:                 84 kB</span><br><span class="line">Swap:                  0 kB</span><br><span class="line">Size:                  4 kB</span><br><span class="line">Swap:                  0 kB</span><br><span class="line">Size:                  4 kB</span><br><span class="line">Swap:                  0 kB</span><br><span class="line">Size:                  8 kB</span><br><span class="line">Swap:                  4 kB</span><br><span class="line">Size:                  8 kB</span><br><span class="line">Swap:                  0 kB</span><br><span class="line">Size:                  4 kB</span><br><span class="line">Swap:                  0 kB</span><br><span class="line">Size:                  4 kB</span><br><span class="line">Swap:                  4 kB</span><br><span class="line">Size:                144 kB</span><br><span class="line">Swap:                  0 kB</span><br><span class="line">Size:                  4 kB</span><br><span class="line">Swap:                  0 kB</span><br><span class="line">Size:                  4 kB</span><br><span class="line">Swap:                  4 kB</span><br><span class="line">Size:                 12 kB</span><br><span class="line">Swap:                  4 kB</span><br><span class="line">Size:                108 kB</span><br><span class="line">Swap:                  0 kB</span><br><span class="line">Size:                  4 kB</span><br><span class="line">Swap:                  0 kB</span><br><span class="line">Size:                  4 kB</span><br><span class="line">Swap:                  0 kB</span><br><span class="line">Size:                272 kB</span><br><span class="line">Swap:                  0 kB</span><br><span class="line">Size:                  4 kB</span><br><span class="line">Swap:                  0 kB</span><br></pre></td></tr></table></figure>
+
+<p>正如你从输出所见，这里有一个映射有 720896 kB（只有 12 KB 被交换），在另一个映射中有 156 KB 被交换：基本上占我们内存非常少的部分被交换，所以不会造成大的问题。</p>
+<p>相反，如果有大量进程内存页被交换到磁盘，那么你的响应延迟问题可能和内存页交换有关。如果是这样的话，你可以使用<code>vmstat</code>命令来进一步检查你的 Redis 实例：</p>
+<p><img src="https://raw.githubusercontent.com/LooJee/medias/master/images/20190917204835.png" alt></p>
+<p>输出中我们需要的一部分是两列 <code>si</code> 和 <code>so</code> ，它们记录了内存从 swap 文件交换出和交换入的次数。如果你看到的这两列是非 0 的，那么你的系统上存在内存交换。</p>
+<p>最后， iostat 命令可以用于检测系统的全局 I/O 活动。</p>
+<p><img src="https://raw.githubusercontent.com/LooJee/medias/master/images/20190917205312.png" alt></p>
+<p>如果延迟问题是由于Redis内存在磁盘上交换造成的，则需要降低系统内存压力，如果Redis使用的内存超过可用内存，则增加更多内存，或者避免在同一系统中运行其他内存耗尽的进程。</p>
+<h2 id="由于AOF和磁盘I-O导致的延迟"><a href="#由于AOF和磁盘I-O导致的延迟" class="headerlink" title="由于AOF和磁盘I / O导致的延迟"></a>由于AOF和磁盘I / O导致的延迟</h2><p>另一个导致延迟的原因是 Redis 支持的 AOF 功能。AOF 基本上只使用两个系统调用来完成工作。一个是 <code>write(2)</code>，它用来追加数据到文件，另一个是 <code>fdatasync(2)</code> ，用来刷新内核文件缓存到磁盘，用来确保用户指定的持久化级别。</p>
+<p> <code>write(2)</code>和 <code>fdatasync(2)</code>都有可能导致延迟。例如，当正在进行系统大范围同步，或者输出缓冲区已满，内核需要将数据刷新到磁盘来保证接受新的写操作时，都有可能阻塞  <code>write(2)</code>。</p>
+<p><code>fdatasync(2)</code>调用是一个导致延迟的更糟糕的原因，因为使用的内核和文件系统的许多组合可能需要几毫秒到几秒才能完成，特别是在某些其他进程执行 I/O 的情况下。出于这个原因，Redis 2.4 可能会在不同的线程中执行<code>fdatasync(2)</code>调用。</p>
+<p>我们将会看到如何设置可以改善使用 AOF 文件引起的延迟问题。</p>
+<p>可以使用<code>appendfsync</code>配置选项将 AOF配 置为以三种不同方式在磁盘上执行 fsync（可以使用<code>CONFIG SET</code>命令在运行时修改此设置）。</p>
+<ol>
+<li>当 <code>appendfsync</code> 被设置为 <code>no</code>时，Redis 将不会执行 fsync。这种设置方式里，只有<code>write(2)</code>会导致延迟。这种情况下发生延迟通常没有解决方法，原因非常简单，因为磁盘拷贝的速度无法跟上 Redis 接收数据的速度，不过这种情况十分不常见，除非因为其他进程在操作 I/O 导致磁盘读写很慢。</li>
+<li>当 <code>appendfsync</code>被设置为 <code>everysec</code> 时，Redis 每秒执行一次 fsync。它会使用一个不同的线程，并且当 fsync 在运行的时候，Redis 会使用 buffer 来延迟 <code>write(2)</code> 的调用 2 秒左右（因为在 Linux 中，当 write 和 fsync 在进程中竞争同一个文件时会导致阻塞）。然而，如果 fsync 占用了太长的时间，Redis 最终会执行 write 调用，这将会导致延迟。</li>
+<li>当 <code>appendfsync</code> 被设置为 <code>always</code> 时，fsync 会在每次写操作时执行，这个操作发生在回复 OK 应答给客户端之前（事实上 Redis 会尝试将多个同时执行的命令集合到一个 fsync 中）。在这种模式下性能通常会非常慢，非常推荐使用快的磁盘和执行 fsync 很快的文件系统。</li>
+</ol>
+<p>大多数 Redis 用户会使用 <code>no</code> 或者 <code>everysec</code> 来设置 <code>appendfsync</code>。获得最少的延迟的建议时避免其它进程在同一系统中操作 I/O。使用 SSD 硬盘可以提供很好的帮助，不过如果磁盘是空闲的，那么非 SSD 磁盘也能有很好的表现，因为 Redis 写 AOF 文件的时候不需要执行任何查找。</p>
+<p>如果想要确认延迟是否和 AOF 文件相关，在 Linux 下你可以使用 <code>strace</code>命令来查看：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo strace -p $(pidof redis-server) -T -e trace=fdatasync</span><br></pre></td></tr></table></figure>
+
+<p>上面的命令将会显示 Redis 在主线程执行的所有 <code>fdatasync(2)</code> 命令。你不能通过上面的命令查看当 appendfsync 设置为 <code>everysec</code>时在后台线程执行的 <code>fdatasync</code>命令。可以添加 -f 参数来查看后台执行的 <code>fdatasync</code>命令。</p>
+<p>如果你想要同时查看 <code>fdatasync</code> 和 <code>write</code> 两个系统调用，可以使用下面的命令:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo strace -p $(pidof redis-server) -T -e trace=fdatasync,write</span><br></pre></td></tr></table></figure>
+
+<p>不过，因为 <code>write</code>命令还被用于写数据到客户端的套接字，所以可能会显示很多和磁盘 I/O 无关的数据。显然没有办法告诉 strace 只显示慢速系统调用，所以我使用以下命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo strace -f -p $(pidof redis-server) -T -e trace=fdatasync,write 2&gt;&amp;1 | grep -v '0.0' | grep -v unfinished</span><br></pre></td></tr></table></figure>
+
+<h2 id="到期产生的延迟"><a href="#到期产生的延迟" class="headerlink" title="到期产生的延迟"></a>到期产生的延迟</h2><p>Redis 使用下面两种方法来处理过期的键：</p>
+<ol>
+<li>一种被动的方式是，在一个命令被请求时，如果发现它已经过期了，那就将它删除。</li>
+<li>一种主动的方式是，每 100 毫秒删除一些过期的键。</li>
+</ol>
+<p>主动过期的方式被设计为自适应的。每 100 毫秒一个周期（每秒 10 次），它将进行下面的操作：</p>
+<ol>
+<li>采用<code>ACTIVE_EXPIRE_CYCLE_LOOKUPS_PER_LOOP</code> 键，删除所有已经过期的键。</li>
+<li>如果超过 25% 的键是已经过期的，重复这个过程。</li>
+</ol>
+<p><code>ACTIVE_EXPIRE_CYCLE_LOOKUPS_PER_LOOP</code> 的默认值是 20，这个过程每秒执行 10 次，通常没有将会有 200 个键因过期被主动删除。这已经能够快地清除 DB 了，即使有些键已经很久没有被访问了，所以被动算法是没什么帮助的。同时，每秒删除 200 个键并不会对 Redis 的延迟造成影响。</p>
+<p>然而，这个算法是自适应的，如果在采样键集合中找到了超过  25% 的键是过期的，它会循环执行。但是运行这个算法的周期是每秒 10 次，这意味着可能发生在同一秒内被采样的键 25% 以上都过期的情况。</p>
+<p>基本上，这意味着 <strong>如果数据库在同一秒内有非常多键过期了，而且它们构成了当前键集合 25% 的失效键集合</strong>，Redis 可能会阻塞着直到失效键的比例降到 25% 以下。</p>
+<p>这种方式是为了避免因为失效的键使用过多的内存，而且通常都是无害的，因为在同一秒内出现大量失效的键是十分奇怪的，但是用户在同一 Unix 时间广泛使用 <code>EXPIREAT</code> 命令也不是不可能。</p>
+<p>简而言之：注意大量键同时过期引起的响应延迟。</p>
+<h2 id="Redis-软件看门狗"><a href="#Redis-软件看门狗" class="headerlink" title="Redis 软件看门狗"></a>Redis 软件看门狗</h2><p>Redis 2.6 引入了 <strong>Redis 软件看门狗</strong>这个调试工具，它被设计用来跟踪使用其它通常工具无法分析的导致延迟的问题。</p>
+<p>软件看门狗是一个试验性的特性。虽然它被设计为用于开发环境，不过在继续使用之前还是应该备份数据库，因为它可能会对 Redis 服务器的正常操作造成不可预知的影响。</p>
+<p>它只有在通过其它方法没有办法找到原因的情况下才能使用。</p>
+<p>下面是这个特性的工作方式：</p>
+<ol>
+<li>用户使用 <code>CONFIG SET</code> 命令启用软件看门狗。</li>
+<li>Redis 开始一直监控自己。</li>
+<li>如果 Redis 检测到服务器阻塞在了某些操作中，没有即使返回，并且这可能是导致延迟的原因，一个低层的关于服务器阻塞位置的报告将会生成到日志文件中。</li>
+<li>用户在 Redis 的 Google Group 中联系开发者，并展示监控报告的内容。</li>
+</ol>
+<p>注意，这个特性不能在 <code>redis.conf</code>文件中启用，因为它被设计为只能在已经运行的实例中启用，并且只能用于测试用途。</p>
+<p>使用下面的命令来启用这个特性：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CONFIG SET watchdog-period 500</span><br></pre></td></tr></table></figure>
+
+<p>period 被指定为毫秒级。上面这个例子是指在检测到服务器有 500 毫秒或以上的延迟时则记录到日志文件中。最小可配置的延迟时间是 200 毫秒。</p>
+<p>当你使用完了软件看门狗，你可以将<code>watchdog-period</code>参数设置为 0 来关闭这一功能。</p>
+<p><strong>重点</strong>：一定要记得关闭它，因为长时间开启看门狗不是一个好的注意。</p>
+<p>下面的内容是当看门狗检测到延迟大于设置的值时会记录到日志文件中的内容：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">[8547 | signal handler] (1333114359)</span><br><span class="line">--- WATCHDOG TIMER EXPIRED ---</span><br><span class="line">/lib/libc.so.6(nanosleep+0x2d) [0x7f16b5c2d39d]</span><br><span class="line">/lib/libpthread.so.0(+0xf8f0) [0x7f16b5f158f0]</span><br><span class="line">/lib/libc.so.6(nanosleep+0x2d) [0x7f16b5c2d39d]</span><br><span class="line">/lib/libc.so.6(usleep+0x34) [0x7f16b5c62844]</span><br><span class="line">./redis-server(debugCommand+0x3e1) [0x43ab41]</span><br><span class="line">./redis-server(call+0x5d) [0x415a9d]</span><br><span class="line">./redis-server(processCommand+0x375) [0x415fc5]</span><br><span class="line">./redis-server(processInputBuffer+0x4f) [0x4203cf]</span><br><span class="line">./redis-server(readQueryFromClient+0xa0) [0x4204e0]</span><br><span class="line">./redis-server(aeProcessEvents+0x128) [0x411b48]</span><br><span class="line">./redis-server(aeMain+0x2b) [0x411dbb]</span><br><span class="line">./redis-server(main+0x2b6) [0x418556]</span><br><span class="line">/lib/libc.so.6(__libc_start_main+0xfd) [0x7f16b5ba1c4d]</span><br><span class="line">./redis-server() [0x411099]</span><br><span class="line">------</span><br></pre></td></tr></table></figure>
+
+<p>注意：在例子中 <strong>DEBUG SLEEP</strong> 命令是用来组在服务器的。如果服务器阻塞在不同的位置，那么堆栈信息将会是不同的。</p>
+<p>如果你碰巧收集了多份看门狗堆栈信息，我们鼓励你将他们都发送到 Redis 的 Google Group：我们收集到越多的堆栈信息，那么你的实例的问题将越容易被理解。</p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>加载评论需要在浏览器启用 JavaScript 脚本支持。</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="http://github.com/loojee">项目</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#我很忙，给我清单"><span class="toc-number">1.</span> <span class="toc-text">我很忙，给我清单</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#测量延迟"><span class="toc-number">2.</span> <span class="toc-text">测量延迟</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用-Redis-内置的延迟监控子系统"><span class="toc-number">3.</span> <span class="toc-text">使用 Redis 内置的延迟监控子系统</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#延迟基准线"><span class="toc-number">4.</span> <span class="toc-text">延迟基准线</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#受网络和通讯影响的延迟"><span class="toc-number">5.</span> <span class="toc-text">受网络和通讯影响的延迟</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis-的单线程特性"><span class="toc-number">6.</span> <span class="toc-text">Redis 的单线程特性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#慢查询导致的延迟"><span class="toc-number">7.</span> <span class="toc-text">慢查询导致的延迟</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#由-fork-引发的延迟"><span class="toc-number">8.</span> <span class="toc-text">由 fork 引发的延迟</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#不同系统上-fork-的时间"><span class="toc-number">9.</span> <span class="toc-text">不同系统上 fork 的时间</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#transparent-huge-pages引起的响应延迟"><span class="toc-number">10.</span> <span class="toc-text">transparent huge pages引起的响应延迟</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#页面交换（操作系统分页）引起的延迟"><span class="toc-number">11.</span> <span class="toc-text">页面交换（操作系统分页）引起的延迟</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#由于AOF和磁盘I-O导致的延迟"><span class="toc-number">12.</span> <span class="toc-text">由于AOF和磁盘I / O导致的延迟</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#到期产生的延迟"><span class="toc-number">13.</span> <span class="toc-text">到期产生的延迟</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis-软件看门狗"><span class="toc-number">14.</span> <span class="toc-text">Redis 软件看门狗</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://tech-seeker.cn/2019/09/15/译-redis延迟问题排查/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://tech-seeker.cn/2019/09/15/译-redis延迟问题排查/&text=译-redis延迟问题排查"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://tech-seeker.cn/2019/09/15/译-redis延迟问题排查/&title=译-redis延迟问题排查"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://tech-seeker.cn/2019/09/15/译-redis延迟问题排查/&is_video=false&description=译-redis延迟问题排查"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=译-redis延迟问题排查&body=Check out this article: http://tech-seeker.cn/2019/09/15/译-redis延迟问题排查/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://tech-seeker.cn/2019/09/15/译-redis延迟问题排查/&title=译-redis延迟问题排查"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://tech-seeker.cn/2019/09/15/译-redis延迟问题排查/&title=译-redis延迟问题排查"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://tech-seeker.cn/2019/09/15/译-redis延迟问题排查/&title=译-redis延迟问题排查"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://tech-seeker.cn/2019/09/15/译-redis延迟问题排查/&title=译-redis延迟问题排查"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://tech-seeker.cn/2019/09/15/译-redis延迟问题排查/&name=译-redis延迟问题排查&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2019 Jie Lu
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/tags/">标签</a></li>
+         
+          <li><a href="http://github.com/loojee">项目</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+    <!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'tech-seeker';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+
+</body>
+</html>
