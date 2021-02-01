@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" 
+  xmlns:content="http://purl.org/rss/1.0/modules/content/" 
+  xmlns:dc="http://purl.org/dc/elements/1.1/" 
+  xmlns:atom="http://www.w3.org/2005/Atom" 
+  xmlns:sy="http://purl.org/rss/1.0/modules/syndication/" 
+  xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <title>Categories on chit-chat</title>
+    <link>http://loojee.github.io/categories/</link>
+    <description>Recent content in Categories on chit-chat</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <managingEditor>geekerekeep@gmail.com (Jonathan Lu)</managingEditor>
+    <webMaster>geekerekeep@gmail.com (Jonathan Lu)</webMaster>
+    <copyright>&amp;copy;2019~time.Now(), All Rights Reserved</copyright>
+    <lastBuildDate>Fri, 24 May 2019 16:16:49 +0000</lastBuildDate>
+    
+        <atom:link href="http://loojee.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    
+
+      
+      <item>
+        <title>golang</title>
+        <link>http://loojee.github.io/categories/golang/</link>
+        <pubDate>Fri, 24 May 2019 16:16:49 +0000</pubDate>
+        <author>geekerekeep@gmail.com (Jonathan Lu)</author>
+        
+        <guid>http://loojee.github.io/categories/golang/</guid>
+        <description></description>
+        
+        <dc:creator>Jonathan Lu</dc:creator>
+        
+        
+        
+        
+        
+        
+      </item>
+      
+      <item>
+        <title>编程杂记</title>
+        <link>http://loojee.github.io/categories/%E7%BC%96%E7%A8%8B%E6%9D%82%E8%AE%B0/</link>
+        <pubDate>Wed, 17 Apr 2019 14:21:09 +0000</pubDate>
+        <author>geekerekeep@gmail.com (Jonathan Lu)</author>
+        
+        <guid>http://loojee.github.io/categories/%E7%BC%96%E7%A8%8B%E6%9D%82%E8%AE%B0/</guid>
+        <description></description>
+        
+        <dc:creator>Jonathan Lu</dc:creator>
+        
+        
+        
+        
+        
+        
+      </item>
+      
+      <item>
+        <title>网络技术</title>
+        <link>http://loojee.github.io/categories/%E7%BD%91%E7%BB%9C%E6%8A%80%E6%9C%AF/</link>
+        <pubDate>Sun, 31 Mar 2019 14:18:43 +0000</pubDate>
+        <author>geekerekeep@gmail.com (Jonathan Lu)</author>
+        
+        <guid>http://loojee.github.io/categories/%E7%BD%91%E7%BB%9C%E6%8A%80%E6%9C%AF/</guid>
+        <description></description>
+        
+        <dc:creator>Jonathan Lu</dc:creator>
+        
+        
+        
+        
+        
+        
+      </item>
+      
+      <item>
+        <title>杂记</title>
+        <link>http://loojee.github.io/categories/%E6%9D%82%E8%AE%B0/</link>
+        <pubDate>Sun, 24 Mar 2019 14:32:43 +0000</pubDate>
+        <author>geekerekeep@gmail.com (Jonathan Lu)</author>
+        
+        <guid>http://loojee.github.io/categories/%E6%9D%82%E8%AE%B0/</guid>
+        <description></description>
+        
+        <dc:creator>Jonathan Lu</dc:creator>
+        
+        
+        
+        
+        
+        
+      </item>
+      
+
+    
+  </channel>
+</rss>
