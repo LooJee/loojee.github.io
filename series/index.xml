@@ -7,7 +7,7 @@
   xmlns:media="http://search.yahoo.com/mrss/">
   <channel>
     <title>Series on chit-chat</title>
-    <link>http://loojee.github.io/series/</link>
+    <link>http://www.cybermilly.com/series/</link>
     <description>Recent content in Series on chit-chat</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
@@ -15,7 +15,7 @@
     <webMaster>geekerekeep@gmail.com (Jonathan Lu)</webMaster>
     <copyright>&amp;copy;2019~time.Now(), All Rights Reserved</copyright>
     
-        <atom:link href="http://loojee.github.io/series/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="http://www.cybermilly.com/series/index.xml" rel="self" type="application/rss+xml" />
     
     
     

@@ -7,7 +7,7 @@
   xmlns:media="http://search.yahoo.com/mrss/">
   <channel>
     <title>Tag on chit-chat</title>
-    <link>http://loojee.github.io/tags/</link>
+    <link>http://www.cybermilly.com/tags/</link>
     <description>Recent content in Tag on chit-chat</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
@@ -16,7 +16,7 @@
     <copyright>&amp;copy;2019~time.Now(), All Rights Reserved</copyright>
     <lastBuildDate>Sat, 19 Oct 2019 11:44:14 +0900</lastBuildDate>
     
-        <atom:link href="http://loojee.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="http://www.cybermilly.com/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     
@@ -24,11 +24,11 @@
       
       <item>
         <title>docker</title>
-        <link>http://loojee.github.io/tags/docker/</link>
+        <link>http://www.cybermilly.com/tags/docker/</link>
         <pubDate>Mon, 01 Feb 2021 10:05:06 +0800</pubDate>
         <author>geekerekeep@gmail.com (Jonathan Lu)</author>
         
-        <guid>http://loojee.github.io/tags/docker/</guid>
+        <guid>http://www.cybermilly.com/tags/docker/</guid>
         <description></description>
         
         <dc:creator>Jonathan Lu</dc:creator>
@@ -42,11 +42,11 @@
       
       <item>
         <title>redis</title>
-        <link>http://loojee.github.io/tags/redis/</link>
+        <link>http://www.cybermilly.com/tags/redis/</link>
         <pubDate>Sun, 15 Sep 2019 19:21:48 +0000</pubDate>
         <author>geekerekeep@gmail.com (Jonathan Lu)</author>
         
-        <guid>http://loojee.github.io/tags/redis/</guid>
+        <guid>http://www.cybermilly.com/tags/redis/</guid>
         <description></description>
         
         <dc:creator>Jonathan Lu</dc:creator>
@@ -60,11 +60,11 @@
       
       <item>
         <title>学习笔记</title>
-        <link>http://loojee.github.io/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
+        <link>http://www.cybermilly.com/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
         <pubDate>Sun, 15 Sep 2019 19:21:48 +0000</pubDate>
         <author>geekerekeep@gmail.com (Jonathan Lu)</author>
         
-        <guid>http://loojee.github.io/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
+        <guid>http://www.cybermilly.com/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
         <description></description>
         
         <dc:creator>Jonathan Lu</dc:creator>
@@ -78,11 +78,11 @@
       
       <item>
         <title>golang</title>
-        <link>http://loojee.github.io/tags/golang/</link>
+        <link>http://www.cybermilly.com/tags/golang/</link>
         <pubDate>Fri, 13 Sep 2019 14:26:53 +0000</pubDate>
         <author>geekerekeep@gmail.com (Jonathan Lu)</author>
         
-        <guid>http://loojee.github.io/tags/golang/</guid>
+        <guid>http://www.cybermilly.com/tags/golang/</guid>
         <description></description>
         
         <dc:creator>Jonathan Lu</dc:creator>
@@ -96,11 +96,11 @@
       
       <item>
         <title>读源码</title>
-        <link>http://loojee.github.io/tags/%E8%AF%BB%E6%BA%90%E7%A0%81/</link>
+        <link>http://www.cybermilly.com/tags/%E8%AF%BB%E6%BA%90%E7%A0%81/</link>
         <pubDate>Sun, 23 Jun 2019 23:20:48 +0000</pubDate>
         <author>geekerekeep@gmail.com (Jonathan Lu)</author>
         
-        <guid>http://loojee.github.io/tags/%E8%AF%BB%E6%BA%90%E7%A0%81/</guid>
+        <guid>http://www.cybermilly.com/tags/%E8%AF%BB%E6%BA%90%E7%A0%81/</guid>
         <description></description>
         
         <dc:creator>Jonathan Lu</dc:creator>
@@ -114,11 +114,11 @@
       
       <item>
         <title>杂记</title>
-        <link>http://loojee.github.io/tags/%E6%9D%82%E8%AE%B0/</link>
+        <link>http://www.cybermilly.com/tags/%E6%9D%82%E8%AE%B0/</link>
         <pubDate>Sun, 09 Jun 2019 19:40:53 +0000</pubDate>
         <author>geekerekeep@gmail.com (Jonathan Lu)</author>
         
-        <guid>http://loojee.github.io/tags/%E6%9D%82%E8%AE%B0/</guid>
+        <guid>http://www.cybermilly.com/tags/%E6%9D%82%E8%AE%B0/</guid>
         <description></description>
         
         <dc:creator>Jonathan Lu</dc:creator>
@@ -132,11 +132,11 @@
       
       <item>
         <title>DNS</title>
-        <link>http://loojee.github.io/tags/dns/</link>
+        <link>http://www.cybermilly.com/tags/dns/</link>
         <pubDate>Sun, 31 Mar 2019 14:18:43 +0000</pubDate>
         <author>geekerekeep@gmail.com (Jonathan Lu)</author>
         
-        <guid>http://loojee.github.io/tags/dns/</guid>
+        <guid>http://www.cybermilly.com/tags/dns/</guid>
         <description></description>
         
         <dc:creator>Jonathan Lu</dc:creator>
@@ -150,11 +150,11 @@
       
       <item>
         <title>index</title>
-        <link>http://loojee.github.io/tags/index/</link>
+        <link>http://www.cybermilly.com/tags/index/</link>
         <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
         <author>geekerekeep@gmail.com (Jonathan Lu)</author>
         
-        <guid>http://loojee.github.io/tags/index/</guid>
+        <guid>http://www.cybermilly.com/tags/index/</guid>
         <description></description>
         
         <dc:creator>Jonathan Lu</dc:creator>
