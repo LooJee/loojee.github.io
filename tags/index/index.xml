@@ -7,7 +7,7 @@
   xmlns:media="http://search.yahoo.com/mrss/">
   <channel>
     <title>index on chit-chat</title>
-    <link>http://www.cybermilly.com/tags/index/</link>
+    <link>http://blog.cybermilly.com/tags/index/</link>
     <description>Recent content in index on chit-chat</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
@@ -15,7 +15,7 @@
     <webMaster>geekerekeep@gmail.com (Jonathan Lu)</webMaster>
     <copyright>&amp;copy;2019~time.Now(), All Rights Reserved</copyright>
     
-        <atom:link href="http://www.cybermilly.com/tags/index/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="http://blog.cybermilly.com/tags/index/index.xml" rel="self" type="application/rss+xml" />
     
     
     
@@ -23,11 +23,11 @@
       
       <item>
         <title>Posts</title>
-        <link>http://www.cybermilly.com/posts/</link>
+        <link>http://blog.cybermilly.com/posts/</link>
         <pubDate>Mon, 01 Feb 2021 10:05:06 +0800</pubDate>
         <author>geekerekeep@gmail.com (Jonathan Lu)</author>
         
-        <guid>http://www.cybermilly.com/posts/</guid>
+        <guid>http://blog.cybermilly.com/posts/</guid>
         <description></description>
         
         <dc:creator>Hugo Authors</dc:creator>

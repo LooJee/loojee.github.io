@@ -7,7 +7,7 @@
   xmlns:media="http://search.yahoo.com/mrss/">
   <channel>
     <title>chit-chat</title>
-    <link>http://www.cybermilly.com/</link>
+    <link>http://blog.cybermilly.com/</link>
     <description>Recent content on chit-chat</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
@@ -16,7 +16,7 @@
     <copyright>&amp;copy;2019~time.Now(), All Rights Reserved</copyright>
     <lastBuildDate>Mon, 01 Feb 2021 10:05:06 +0800</lastBuildDate>
     
-        <atom:link href="http://www.cybermilly.com/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="http://blog.cybermilly.com/index.xml" rel="self" type="application/rss+xml" />
     
     
     
@@ -45,11 +45,11 @@
       
       <item>
         <title>外部主机无法访问宿主机内容器是怎么回事</title>
-        <link>http://www.cybermilly.com/posts/%E5%A4%96%E9%83%A8%E4%B8%BB%E6%9C%BA%E6%97%A0%E6%B3%95%E8%AE%BF%E9%97%AE%E5%AE%BF%E4%B8%BB%E6%9C%BA%E5%86%85%E5%AE%B9%E5%99%A8%E6%98%AF%E6%80%8E%E4%B9%88%E5%9B%9E%E4%BA%8B/</link>
+        <link>http://blog.cybermilly.com/posts/%E5%A4%96%E9%83%A8%E4%B8%BB%E6%9C%BA%E6%97%A0%E6%B3%95%E8%AE%BF%E9%97%AE%E5%AE%BF%E4%B8%BB%E6%9C%BA%E5%86%85%E5%AE%B9%E5%99%A8%E6%98%AF%E6%80%8E%E4%B9%88%E5%9B%9E%E4%BA%8B/</link>
         <pubDate>Mon, 01 Feb 2021 10:05:06 +0800</pubDate>
         <author>geekerekeep@gmail.com (Jonathan Lu)</author>
         <atom:modified>Mon, 01 Feb 2021 10:05:06 +0800</atom:modified>
-        <guid>http://www.cybermilly.com/posts/%E5%A4%96%E9%83%A8%E4%B8%BB%E6%9C%BA%E6%97%A0%E6%B3%95%E8%AE%BF%E9%97%AE%E5%AE%BF%E4%B8%BB%E6%9C%BA%E5%86%85%E5%AE%B9%E5%99%A8%E6%98%AF%E6%80%8E%E4%B9%88%E5%9B%9E%E4%BA%8B/</guid>
+        <guid>http://blog.cybermilly.com/posts/%E5%A4%96%E9%83%A8%E4%B8%BB%E6%9C%BA%E6%97%A0%E6%B3%95%E8%AE%BF%E9%97%AE%E5%AE%BF%E4%B8%BB%E6%9C%BA%E5%86%85%E5%AE%B9%E5%99%A8%E6%98%AF%E6%80%8E%E4%B9%88%E5%9B%9E%E4%BA%8B/</guid>
         <description>TL;DR 是因为创建的容器采用的网络类型是 bridge，而宿主机没有启用 ip 转发，所以，外部主机请求没有转发到对应容器。需要两个步骤启用 ip 转发功能。（</description>
         
         <dc:creator>Jonathan Lu</dc:creator>
@@ -69,11 +69,11 @@
       
       <item>
         <title>译-redis延迟问题排查</title>
-        <link>http://www.cybermilly.com/posts/%E8%AF%91-redis%E5%BB%B6%E8%BF%9F%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/</link>
+        <link>http://blog.cybermilly.com/posts/%E8%AF%91-redis%E5%BB%B6%E8%BF%9F%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/</link>
         <pubDate>Sun, 15 Sep 2019 19:21:48 +0000</pubDate>
         <author>geekerekeep@gmail.com (Jonathan Lu)</author>
         <atom:modified>Sun, 15 Sep 2019 19:21:48 +0000</atom:modified>
-        <guid>http://www.cybermilly.com/posts/%E8%AF%91-redis%E5%BB%B6%E8%BF%9F%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/</guid>
+        <guid>http://blog.cybermilly.com/posts/%E8%AF%91-redis%E5%BB%B6%E8%BF%9F%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/</guid>
         <description>本文是对 redis 官方文档 Redis latency problems troubleshooting 的翻译，诸位看官可结合原文食用。 这个文档将会帮助你理解在使用 Redis 遇到延迟问题时发生了什么。 在这个上下文中，延迟指的是</description>
         
         <dc:creator>Jonathan Lu</dc:creator>
@@ -97,11 +97,11 @@
       
       <item>
         <title>初识golang中的反射</title>
-        <link>http://www.cybermilly.com/posts/%E5%88%9D%E8%AF%86golang%E4%B8%AD%E7%9A%84%E5%8F%8D%E5%B0%84/</link>
+        <link>http://blog.cybermilly.com/posts/%E5%88%9D%E8%AF%86golang%E4%B8%AD%E7%9A%84%E5%8F%8D%E5%B0%84/</link>
         <pubDate>Fri, 13 Sep 2019 14:26:53 +0000</pubDate>
         <author>geekerekeep@gmail.com (Jonathan Lu)</author>
         <atom:modified>Fri, 13 Sep 2019 14:26:53 +0000</atom:modified>
-        <guid>http://www.cybermilly.com/posts/%E5%88%9D%E8%AF%86golang%E4%B8%AD%E7%9A%84%E5%8F%8D%E5%B0%84/</guid>
+        <guid>http://blog.cybermilly.com/posts/%E5%88%9D%E8%AF%86golang%E4%B8%AD%E7%9A%84%E5%8F%8D%E5%B0%84/</guid>
         <description>定义类型、声明变量、使用变量是一门编程语言的基本功能，我们可以这样来定义一个结构体类型： 1 2 3 4 type Foo struct { X string `foo:&amp;#34;x&amp;#34;` Y int `foo:&amp;#34;y&amp;#34;` } 像这样来使用这个类型声</description>
         
         <dc:creator>Jonathan Lu</dc:creator>
@@ -121,11 +121,11 @@
       
       <item>
         <title>读源码:redigo 的连接池</title>
-        <link>http://www.cybermilly.com/posts/%E8%AF%BB%E6%BA%90%E7%A0%81-redigo-%E7%9A%84%E8%BF%9E%E6%8E%A5%E6%B1%A0/</link>
+        <link>http://blog.cybermilly.com/posts/%E8%AF%BB%E6%BA%90%E7%A0%81-redigo-%E7%9A%84%E8%BF%9E%E6%8E%A5%E6%B1%A0/</link>
         <pubDate>Sun, 23 Jun 2019 23:20:48 +0000</pubDate>
         <author>geekerekeep@gmail.com (Jonathan Lu)</author>
         <atom:modified>Sun, 23 Jun 2019 23:20:48 +0000</atom:modified>
-        <guid>http://www.cybermilly.com/posts/%E8%AF%BB%E6%BA%90%E7%A0%81-redigo-%E7%9A%84%E8%BF%9E%E6%8E%A5%E6%B1%A0/</guid>
+        <guid>http://blog.cybermilly.com/posts/%E8%AF%BB%E6%BA%90%E7%A0%81-redigo-%E7%9A%84%E8%BF%9E%E6%8E%A5%E6%B1%A0/</guid>
         <description>前面有说到，redigo 不是一个并发安全的 redis 库，它推荐在并发时使用连接池来访问 redis 服务器，redigo 连接池的典型使用方法如下所示： 1 2 3 4 5</description>
         
         <dc:creator>Jonathan Lu</dc:creator>
@@ -149,11 +149,11 @@
       
       <item>
         <title>读源码:redigo为什么多线程不安全</title>
-        <link>http://www.cybermilly.com/posts/%E8%AF%BB%E6%BA%90%E7%A0%81-redigo%E4%B8%BA%E4%BB%80%E4%B9%88%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8D%E5%AE%89%E5%85%A8/</link>
+        <link>http://blog.cybermilly.com/posts/%E8%AF%BB%E6%BA%90%E7%A0%81-redigo%E4%B8%BA%E4%BB%80%E4%B9%88%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8D%E5%AE%89%E5%85%A8/</link>
         <pubDate>Sun, 16 Jun 2019 21:05:45 +0000</pubDate>
         <author>geekerekeep@gmail.com (Jonathan Lu)</author>
         <atom:modified>Sun, 16 Jun 2019 21:05:45 +0000</atom:modified>
-        <guid>http://www.cybermilly.com/posts/%E8%AF%BB%E6%BA%90%E7%A0%81-redigo%E4%B8%BA%E4%BB%80%E4%B9%88%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8D%E5%AE%89%E5%85%A8/</guid>
+        <guid>http://blog.cybermilly.com/posts/%E8%AF%BB%E6%BA%90%E7%A0%81-redigo%E4%B8%BA%E4%BB%80%E4%B9%88%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8D%E5%AE%89%E5%85%A8/</guid>
         <description>redigo是golang的一个操作redis的第三方库，之所以选择这个库，是因为它的文档十分丰富，操作起来也比较简单。一个典型的redig</description>
         
         <dc:creator>Jonathan Lu</dc:creator>
@@ -177,11 +177,11 @@
       
       <item>
         <title>博客从 wordpress 迁移到 github pages</title>
-        <link>http://www.cybermilly.com/posts/%E5%8D%9A%E5%AE%A2%E4%BB%8E-wordpress-%E8%BF%81%E7%A7%BB%E5%88%B0-github-pages/</link>
+        <link>http://blog.cybermilly.com/posts/%E5%8D%9A%E5%AE%A2%E4%BB%8E-wordpress-%E8%BF%81%E7%A7%BB%E5%88%B0-github-pages/</link>
         <pubDate>Sun, 09 Jun 2019 19:40:53 +0000</pubDate>
         <author>geekerekeep@gmail.com (Jonathan Lu)</author>
         <atom:modified>Sun, 09 Jun 2019 19:40:53 +0000</atom:modified>
-        <guid>http://www.cybermilly.com/posts/%E5%8D%9A%E5%AE%A2%E4%BB%8E-wordpress-%E8%BF%81%E7%A7%BB%E5%88%B0-github-pages/</guid>
+        <guid>http://blog.cybermilly.com/posts/%E5%8D%9A%E5%AE%A2%E4%BB%8E-wordpress-%E8%BF%81%E7%A7%BB%E5%88%B0-github-pages/</guid>
         <description>前言 进入6月之后，可能是因为特殊时期吧，我的 aws 被墙掉了，我的博客也没法访问了。考虑过重新买个 aws，不过，考虑到这几天我连续被墙掉了 3 个 vp</description>
         
         <dc:creator>Jonathan Lu</dc:creator>
@@ -201,11 +201,11 @@
       
       <item>
         <title>golang 中 time 包的时区问题</title>
-        <link>http://www.cybermilly.com/87.html</link>
+        <link>http://blog.cybermilly.com/87.html</link>
         <pubDate>Fri, 24 May 2019 16:16:49 +0000</pubDate>
         <author>geekerekeep@gmail.com (Jonathan Lu)</author>
         <atom:modified>Fri, 24 May 2019 16:16:49 +0000</atom:modified>
-        <guid>http://www.cybermilly.com/87.html</guid>
+        <guid>http://blog.cybermilly.com/87.html</guid>
         <description>最近项目中有一个功能，是定时从远端服务器同步数据到本地，数据中有一个字段是时间格式的。每次我的同步程序从服务器上获取到数据和本地数据库保存的</description>
         
         <dc:creator>Jonathan Lu</dc:creator>
@@ -231,11 +231,11 @@
       
       <item>
         <title>golang 中 for range 的问题</title>
-        <link>http://www.cybermilly.com/75.html</link>
+        <link>http://blog.cybermilly.com/75.html</link>
         <pubDate>Wed, 17 Apr 2019 14:21:09 +0000</pubDate>
         <author>geekerekeep@gmail.com (Jonathan Lu)</author>
         <atom:modified>Wed, 17 Apr 2019 14:21:09 +0000</atom:modified>
-        <guid>http://www.cybermilly.com/75.html</guid>
+        <guid>http://blog.cybermilly.com/75.html</guid>
         <description>最近项目在使用 golang 开发，对于一直使用 c 开发的我来说 golang 有着十分强大的内置库，生态也还可以，使用起来确实十分的舒适，最重要的是不需要手动管理内存，</description>
         
         <dc:creator>Jonathan Lu</dc:creator>
@@ -265,11 +265,11 @@
       
       <item>
         <title>初探域名解析</title>
-        <link>http://www.cybermilly.com/63.html</link>
+        <link>http://blog.cybermilly.com/63.html</link>
         <pubDate>Sun, 31 Mar 2019 14:18:43 +0000</pubDate>
         <author>geekerekeep@gmail.com (Jonathan Lu)</author>
         <atom:modified>Sun, 31 Mar 2019 14:18:43 +0000</atom:modified>
-        <guid>http://www.cybermilly.com/63.html</guid>
+        <guid>http://blog.cybermilly.com/63.html</guid>
         <description>最近发现在 aws 上有 12 个月免费使用的 ec2 主机，于是就注册了一个，顺便搭建了这个博客。但是，一个好的博客不能总是用 IP 来访问的嘛。于是就在 godaddy 上买了一个</description>
         
         <dc:creator>Jonathan Lu</dc:creator>
@@ -295,11 +295,11 @@
       
       <item>
         <title>养成优秀品格的7条准则</title>
-        <link>http://www.cybermilly.com/38.html</link>
+        <link>http://blog.cybermilly.com/38.html</link>
         <pubDate>Sun, 24 Mar 2019 14:32:43 +0000</pubDate>
         <author>geekerekeep@gmail.com (Jonathan Lu)</author>
         <atom:modified>Sun, 24 Mar 2019 14:32:43 +0000</atom:modified>
-        <guid>http://www.cybermilly.com/38.html</guid>
+        <guid>http://blog.cybermilly.com/38.html</guid>
         <description>这七条准则摘自《小狗钱钱》。这是本很好的书，适合给幼龄孩子做理财启蒙和人格培养启蒙。当然了，没有怎么启蒙过的我也适合看。😀 友好亲和 我有一个强</description>
         
         <dc:creator>Jonathan Lu</dc:creator>

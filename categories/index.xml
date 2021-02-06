@@ -7,7 +7,7 @@
   xmlns:media="http://search.yahoo.com/mrss/">
   <channel>
     <title>Categories on chit-chat</title>
-    <link>http://www.cybermilly.com/categories/</link>
+    <link>http://blog.cybermilly.com/categories/</link>
     <description>Recent content in Categories on chit-chat</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
@@ -16,7 +16,7 @@
     <copyright>&amp;copy;2019~time.Now(), All Rights Reserved</copyright>
     <lastBuildDate>Fri, 24 May 2019 16:16:49 +0000</lastBuildDate>
     
-        <atom:link href="http://www.cybermilly.com/categories/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="http://blog.cybermilly.com/categories/index.xml" rel="self" type="application/rss+xml" />
     
     
     
@@ -24,11 +24,11 @@
       
       <item>
         <title>golang</title>
-        <link>http://www.cybermilly.com/categories/golang/</link>
+        <link>http://blog.cybermilly.com/categories/golang/</link>
         <pubDate>Fri, 24 May 2019 16:16:49 +0000</pubDate>
         <author>geekerekeep@gmail.com (Jonathan Lu)</author>
         
-        <guid>http://www.cybermilly.com/categories/golang/</guid>
+        <guid>http://blog.cybermilly.com/categories/golang/</guid>
         <description></description>
         
         <dc:creator>Jonathan Lu</dc:creator>
@@ -42,11 +42,11 @@
       
       <item>
         <title>编程杂记</title>
-        <link>http://www.cybermilly.com/categories/%E7%BC%96%E7%A8%8B%E6%9D%82%E8%AE%B0/</link>
+        <link>http://blog.cybermilly.com/categories/%E7%BC%96%E7%A8%8B%E6%9D%82%E8%AE%B0/</link>
         <pubDate>Wed, 17 Apr 2019 14:21:09 +0000</pubDate>
         <author>geekerekeep@gmail.com (Jonathan Lu)</author>
         
-        <guid>http://www.cybermilly.com/categories/%E7%BC%96%E7%A8%8B%E6%9D%82%E8%AE%B0/</guid>
+        <guid>http://blog.cybermilly.com/categories/%E7%BC%96%E7%A8%8B%E6%9D%82%E8%AE%B0/</guid>
         <description></description>
         
         <dc:creator>Jonathan Lu</dc:creator>
@@ -60,11 +60,11 @@
       
       <item>
         <title>网络技术</title>
-        <link>http://www.cybermilly.com/categories/%E7%BD%91%E7%BB%9C%E6%8A%80%E6%9C%AF/</link>
+        <link>http://blog.cybermilly.com/categories/%E7%BD%91%E7%BB%9C%E6%8A%80%E6%9C%AF/</link>
         <pubDate>Sun, 31 Mar 2019 14:18:43 +0000</pubDate>
         <author>geekerekeep@gmail.com (Jonathan Lu)</author>
         
-        <guid>http://www.cybermilly.com/categories/%E7%BD%91%E7%BB%9C%E6%8A%80%E6%9C%AF/</guid>
+        <guid>http://blog.cybermilly.com/categories/%E7%BD%91%E7%BB%9C%E6%8A%80%E6%9C%AF/</guid>
         <description></description>
         
         <dc:creator>Jonathan Lu</dc:creator>
@@ -78,11 +78,11 @@
       
       <item>
         <title>杂记</title>
-        <link>http://www.cybermilly.com/categories/%E6%9D%82%E8%AE%B0/</link>
+        <link>http://blog.cybermilly.com/categories/%E6%9D%82%E8%AE%B0/</link>
         <pubDate>Sun, 24 Mar 2019 14:32:43 +0000</pubDate>
         <author>geekerekeep@gmail.com (Jonathan Lu)</author>
         
-        <guid>http://www.cybermilly.com/categories/%E6%9D%82%E8%AE%B0/</guid>
+        <guid>http://blog.cybermilly.com/categories/%E6%9D%82%E8%AE%B0/</guid>
         <description></description>
         
         <dc:creator>Jonathan Lu</dc:creator>

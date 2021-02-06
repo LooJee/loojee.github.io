@@ -7,7 +7,7 @@
   xmlns:media="http://search.yahoo.com/mrss/">
   <channel>
     <title>redis on chit-chat</title>
-    <link>http://www.cybermilly.com/tags/redis/</link>
+    <link>http://blog.cybermilly.com/tags/redis/</link>
     <description>Recent content in redis on chit-chat</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
@@ -16,7 +16,7 @@
     <copyright>&amp;copy;2019~time.Now(), All Rights Reserved</copyright>
     <lastBuildDate>Sun, 15 Sep 2019 19:21:48 +0000</lastBuildDate>
     
-        <atom:link href="http://www.cybermilly.com/tags/redis/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="http://blog.cybermilly.com/tags/redis/index.xml" rel="self" type="application/rss+xml" />
     
     
     
@@ -24,11 +24,11 @@
       
       <item>
         <title>译-redis延迟问题排查</title>
-        <link>http://www.cybermilly.com/posts/%E8%AF%91-redis%E5%BB%B6%E8%BF%9F%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/</link>
+        <link>http://blog.cybermilly.com/posts/%E8%AF%91-redis%E5%BB%B6%E8%BF%9F%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/</link>
         <pubDate>Sun, 15 Sep 2019 19:21:48 +0000</pubDate>
         <author>geekerekeep@gmail.com (Jonathan Lu)</author>
         <atom:modified>Sun, 15 Sep 2019 19:21:48 +0000</atom:modified>
-        <guid>http://www.cybermilly.com/posts/%E8%AF%91-redis%E5%BB%B6%E8%BF%9F%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/</guid>
+        <guid>http://blog.cybermilly.com/posts/%E8%AF%91-redis%E5%BB%B6%E8%BF%9F%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/</guid>
         <description>本文是对 redis 官方文档 Redis latency problems troubleshooting 的翻译，诸位看官可结合原文食用。 这个文档将会帮助你理解在使用 Redis 遇到延迟问题时发生了什么。 在这个上下文中，延迟指的是</description>
         
         <dc:creator>Jonathan Lu</dc:creator>

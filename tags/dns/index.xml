@@ -7,7 +7,7 @@
   xmlns:media="http://search.yahoo.com/mrss/">
   <channel>
     <title>DNS on chit-chat</title>
-    <link>http://www.cybermilly.com/tags/dns/</link>
+    <link>http://blog.cybermilly.com/tags/dns/</link>
     <description>Recent content in DNS on chit-chat</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
@@ -16,7 +16,7 @@
     <copyright>&amp;copy;2019~time.Now(), All Rights Reserved</copyright>
     <lastBuildDate>Sun, 31 Mar 2019 14:18:43 +0000</lastBuildDate>
     
-        <atom:link href="http://www.cybermilly.com/tags/dns/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="http://blog.cybermilly.com/tags/dns/index.xml" rel="self" type="application/rss+xml" />
     
     
     
@@ -24,11 +24,11 @@
       
       <item>
         <title>初探域名解析</title>
-        <link>http://www.cybermilly.com/63.html</link>
+        <link>http://blog.cybermilly.com/63.html</link>
         <pubDate>Sun, 31 Mar 2019 14:18:43 +0000</pubDate>
         <author>geekerekeep@gmail.com (Jonathan Lu)</author>
         <atom:modified>Sun, 31 Mar 2019 14:18:43 +0000</atom:modified>
-        <guid>http://www.cybermilly.com/63.html</guid>
+        <guid>http://blog.cybermilly.com/63.html</guid>
         <description>最近发现在 aws 上有 12 个月免费使用的 ec2 主机，于是就注册了一个，顺便搭建了这个博客。但是，一个好的博客不能总是用 IP 来访问的嘛。于是就在 godaddy 上买了一个</description>
         
         <dc:creator>Jonathan Lu</dc:creator>

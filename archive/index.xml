@@ -7,7 +7,7 @@
   xmlns:media="http://search.yahoo.com/mrss/">
   <channel>
     <title>Archive on chit-chat</title>
-    <link>http://www.cybermilly.com/archive/</link>
+    <link>http://blog.cybermilly.com/archive/</link>
     <description>Recent content in Archive on chit-chat</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
@@ -16,7 +16,7 @@
     <copyright>&amp;copy;2019~time.Now(), All Rights Reserved</copyright>
     <lastBuildDate>Sat, 19 Oct 2019 11:44:14 +0900</lastBuildDate>
     
-        <atom:link href="http://www.cybermilly.com/archive/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="http://blog.cybermilly.com/archive/index.xml" rel="self" type="application/rss+xml" />
     
     
     

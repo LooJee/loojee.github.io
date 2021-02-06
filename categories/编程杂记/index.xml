@@ -7,7 +7,7 @@
   xmlns:media="http://search.yahoo.com/mrss/">
   <channel>
     <title>编程杂记 on chit-chat</title>
-    <link>http://www.cybermilly.com/categories/%E7%BC%96%E7%A8%8B%E6%9D%82%E8%AE%B0/</link>
+    <link>http://blog.cybermilly.com/categories/%E7%BC%96%E7%A8%8B%E6%9D%82%E8%AE%B0/</link>
     <description>Recent content in 编程杂记 on chit-chat</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
@@ -16,7 +16,7 @@
     <copyright>&amp;copy;2019~time.Now(), All Rights Reserved</copyright>
     <lastBuildDate>Wed, 17 Apr 2019 14:21:09 +0000</lastBuildDate>
     
-        <atom:link href="http://www.cybermilly.com/categories/%E7%BC%96%E7%A8%8B%E6%9D%82%E8%AE%B0/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="http://blog.cybermilly.com/categories/%E7%BC%96%E7%A8%8B%E6%9D%82%E8%AE%B0/index.xml" rel="self" type="application/rss+xml" />
     
     
     
@@ -24,11 +24,11 @@
       
       <item>
         <title>golang 中 for range 的问题</title>
-        <link>http://www.cybermilly.com/75.html</link>
+        <link>http://blog.cybermilly.com/75.html</link>
         <pubDate>Wed, 17 Apr 2019 14:21:09 +0000</pubDate>
         <author>geekerekeep@gmail.com (Jonathan Lu)</author>
         <atom:modified>Wed, 17 Apr 2019 14:21:09 +0000</atom:modified>
-        <guid>http://www.cybermilly.com/75.html</guid>
+        <guid>http://blog.cybermilly.com/75.html</guid>
         <description>最近项目在使用 golang 开发，对于一直使用 c 开发的我来说 golang 有着十分强大的内置库，生态也还可以，使用起来确实十分的舒适，最重要的是不需要手动管理内存，</description>
         
         <dc:creator>Jonathan Lu</dc:creator>
