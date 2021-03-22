@@ -14,13 +14,51 @@
     <managingEditor>geekerekeep@gmail.com (Jonathan Lu)</managingEditor>
     <webMaster>geekerekeep@gmail.com (Jonathan Lu)</webMaster>
     <copyright>&amp;copy;2019~time.Now(), All Rights Reserved</copyright>
-    <lastBuildDate>Fri, 24 May 2019 16:16:49 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 22 Mar 2021 11:58:09 +0800</lastBuildDate>
     
         <atom:link href="http://blog.cybermilly.com/categories/golang/index.xml" rel="self" type="application/rss+xml" />
     
     
     
 
+      
+      <item>
+        <title>Design Pattern With Go: Singleton</title>
+        <link>http://blog.cybermilly.com/posts/design-pattern-with-go-singleton/</link>
+        <pubDate>Mon, 22 Mar 2021 11:58:09 +0800</pubDate>
+        <author>geekerekeep@gmail.com (Jonathan Lu)</author>
+        <atom:modified>Mon, 22 Mar 2021 11:58:09 +0800</atom:modified>
+        <guid>http://blog.cybermilly.com/posts/design-pattern-with-go-singleton/</guid>
+        <description>定义 一个类只允许创建一个对象（或者实例），那这个类就是一个单例类，这种设计模式就叫作单例模式。当某些数据只需要在系统中保留一份的时候，可以选</description>
+        
+        <dc:creator>Jonathan Lu</dc:creator>
+        
+        
+        
+        
+          
+            
+              <category>golang</category>
+            
+          
+            
+              <category>design-pattern</category>
+            
+          
+        
+        
+          
+            
+              <category>golang</category>
+            
+          
+            
+              <category>design-pattern</category>
+            
+          
+        
+        
+      </item>
       
       <item>
         <title>golang 中 time 包的时区问题</title>

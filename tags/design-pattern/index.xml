@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" 
+  xmlns:content="http://purl.org/rss/1.0/modules/content/" 
+  xmlns:dc="http://purl.org/dc/elements/1.1/" 
+  xmlns:atom="http://www.w3.org/2005/Atom" 
+  xmlns:sy="http://purl.org/rss/1.0/modules/syndication/" 
+  xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <title>design-pattern on chit-chat</title>
+    <link>http://blog.cybermilly.com/tags/design-pattern/</link>
+    <description>Recent content in design-pattern on chit-chat</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <managingEditor>geekerekeep@gmail.com (Jonathan Lu)</managingEditor>
+    <webMaster>geekerekeep@gmail.com (Jonathan Lu)</webMaster>
+    <copyright>&amp;copy;2019~time.Now(), All Rights Reserved</copyright>
+    <lastBuildDate>Mon, 22 Mar 2021 11:58:09 +0800</lastBuildDate>
+    
+        <atom:link href="http://blog.cybermilly.com/tags/design-pattern/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    
+
+      
+      <item>
+        <title>Design Pattern With Go: Singleton</title>
+        <link>http://blog.cybermilly.com/posts/design-pattern-with-go-singleton/</link>
+        <pubDate>Mon, 22 Mar 2021 11:58:09 +0800</pubDate>
+        <author>geekerekeep@gmail.com (Jonathan Lu)</author>
+        <atom:modified>Mon, 22 Mar 2021 11:58:09 +0800</atom:modified>
+        <guid>http://blog.cybermilly.com/posts/design-pattern-with-go-singleton/</guid>
+        <description>定义 一个类只允许创建一个对象（或者实例），那这个类就是一个单例类，这种设计模式就叫作单例模式。当某些数据只需要在系统中保留一份的时候，可以选</description>
+        
+        <dc:creator>Jonathan Lu</dc:creator>
+        
+        
+        
+        
+          
+            
+              <category>golang</category>
+            
+          
+            
+              <category>design-pattern</category>
+            
+          
+        
+        
+          
+            
+              <category>golang</category>
+            
+          
+            
+              <category>design-pattern</category>
+            
+          
+        
+        
+      </item>
+      
+
+    
+  </channel>
+</rss>

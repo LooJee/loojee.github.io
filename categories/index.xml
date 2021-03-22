@@ -14,7 +14,7 @@
     <managingEditor>geekerekeep@gmail.com (Jonathan Lu)</managingEditor>
     <webMaster>geekerekeep@gmail.com (Jonathan Lu)</webMaster>
     <copyright>&amp;copy;2019~time.Now(), All Rights Reserved</copyright>
-    <lastBuildDate>Fri, 24 May 2019 16:16:49 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 22 Mar 2021 11:58:09 +0800</lastBuildDate>
     
         <atom:link href="http://blog.cybermilly.com/categories/index.xml" rel="self" type="application/rss+xml" />
     
@@ -23,9 +23,27 @@
 
       
       <item>
+        <title>design-pattern</title>
+        <link>http://blog.cybermilly.com/categories/design-pattern/</link>
+        <pubDate>Mon, 22 Mar 2021 11:58:09 +0800</pubDate>
+        <author>geekerekeep@gmail.com (Jonathan Lu)</author>
+        
+        <guid>http://blog.cybermilly.com/categories/design-pattern/</guid>
+        <description></description>
+        
+        <dc:creator>Jonathan Lu</dc:creator>
+        
+        
+        
+        
+        
+        
+      </item>
+      
+      <item>
         <title>golang</title>
         <link>http://blog.cybermilly.com/categories/golang/</link>
-        <pubDate>Fri, 24 May 2019 16:16:49 +0000</pubDate>
+        <pubDate>Mon, 22 Mar 2021 11:58:09 +0800</pubDate>
         <author>geekerekeep@gmail.com (Jonathan Lu)</author>
         
         <guid>http://blog.cybermilly.com/categories/golang/</guid>
