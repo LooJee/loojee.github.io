@@ -4,41 +4,46 @@
   
   <url>
     <loc>http://blog.cybermilly.com/</loc>
-    <lastmod>2021-03-22T11:58:09+08:00</lastmod>
+    <lastmod>2021-03-25T15:06:14+08:00</lastmod>
   </url>
   
   <url>
     <loc>http://blog.cybermilly.com/categories/</loc>
-    <lastmod>2021-03-22T11:58:09+08:00</lastmod>
+    <lastmod>2021-03-25T15:06:14+08:00</lastmod>
   </url>
   
   <url>
-    <loc>http://blog.cybermilly.com/posts/design-pattern-with-go-singleton/</loc>
-    <lastmod>2021-03-22T11:58:09+08:00</lastmod>
+    <loc>http://blog.cybermilly.com/posts/design-pattern-with-go-factory/</loc>
+    <lastmod>2021-03-25T15:06:14+08:00</lastmod>
   </url>
   
   <url>
     <loc>http://blog.cybermilly.com/tags/design-pattern/</loc>
-    <lastmod>2021-03-22T11:58:09+08:00</lastmod>
+    <lastmod>2021-03-25T15:06:14+08:00</lastmod>
   </url>
   
   <url>
     <loc>http://blog.cybermilly.com/categories/design-pattern/</loc>
-    <lastmod>2021-03-22T11:58:09+08:00</lastmod>
+    <lastmod>2021-03-25T15:06:14+08:00</lastmod>
   </url>
   
   <url>
     <loc>http://blog.cybermilly.com/tags/golang/</loc>
-    <lastmod>2021-03-22T11:58:09+08:00</lastmod>
+    <lastmod>2021-03-25T15:06:14+08:00</lastmod>
   </url>
   
   <url>
     <loc>http://blog.cybermilly.com/categories/golang/</loc>
-    <lastmod>2021-03-22T11:58:09+08:00</lastmod>
+    <lastmod>2021-03-25T15:06:14+08:00</lastmod>
   </url>
   
   <url>
     <loc>http://blog.cybermilly.com/posts/</loc>
+    <lastmod>2021-03-25T15:06:14+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.cybermilly.com/posts/design-pattern-with-go-singleton/</loc>
     <lastmod>2021-03-22T11:58:09+08:00</lastmod>
   </url>
   

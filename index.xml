@@ -14,7 +14,7 @@
     <managingEditor>geekerekeep@gmail.com (Jonathan Lu)</managingEditor>
     <webMaster>geekerekeep@gmail.com (Jonathan Lu)</webMaster>
     <copyright>&amp;copy;2019~time.Now(), All Rights Reserved</copyright>
-    <lastBuildDate>Mon, 22 Mar 2021 11:58:09 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 25 Mar 2021 15:06:14 +0800</lastBuildDate>
     
         <atom:link href="http://blog.cybermilly.com/index.xml" rel="self" type="application/rss+xml" />
     
@@ -42,6 +42,44 @@
         
       
 
+      
+      <item>
+        <title>Design Pattern With Go: Factory</title>
+        <link>http://blog.cybermilly.com/posts/design-pattern-with-go-factory/</link>
+        <pubDate>Thu, 25 Mar 2021 15:06:14 +0800</pubDate>
+        <author>geekerekeep@gmail.com (Jonathan Lu)</author>
+        <atom:modified>Thu, 25 Mar 2021 15:06:14 +0800</atom:modified>
+        <guid>http://blog.cybermilly.com/posts/design-pattern-with-go-factory/</guid>
+        <description>这次介绍的设计模式是工厂模式，这是一个比较常见的创建型模式。一般情况下，工厂模式分为三种：简单工厂、工厂方法和抽象工厂，下面慢慢举例介绍下。</description>
+        
+        <dc:creator>Jonathan Lu</dc:creator>
+        
+        
+        
+        
+          
+            
+              <category>golang</category>
+            
+          
+            
+              <category>design-pattern</category>
+            
+          
+        
+        
+          
+            
+              <category>golang</category>
+            
+          
+            
+              <category>design-pattern</category>
+            
+          
+        
+        
+      </item>
       
       <item>
         <title>Design Pattern With Go: Singleton</title>

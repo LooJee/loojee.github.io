@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Design Pattern With Go: Singleton – chit-chat</title>
+    <title>Design Pattern With Go: Factory – chit-chat</title>
     
 
 
@@ -653,7 +653,7 @@
     
     var baseurl = JSON.parse("\"http://blog.cybermilly.com\"");
     
-    var permalink = JSON.parse("\"http://blog.cybermilly.com/posts/design-pattern-with-go-singleton/\"");
+    var permalink = JSON.parse("\"http://blog.cybermilly.com/posts/design-pattern-with-go-factory/\"");
     
     var langprefix = JSON.parse("\"\"");
     var searchResults = null;
@@ -1328,16 +1328,16 @@
 
 <meta name="keywords" content="golang,design-pattern">
 
-<meta name="created" content="2021-03-22T11:58:09&#43;0800">
-<meta name="modified" content="2021-03-22T11:58:09&#43;0800">
-<meta property="article:published_time" content="2021-03-22T11:58:09&#43;0800">
+<meta name="created" content="2021-03-25T15:06:14&#43;0800">
+<meta name="modified" content="2021-03-25T15:06:14&#43;0800">
+<meta property="article:published_time" content="2021-03-25T15:06:14&#43;0800">
 
 <meta name="author" content="Jonathan Lu">
 
 
 <meta property="og:site_name" content="chit-chat">
-<meta property="og:title" content="Design Pattern With Go: Singleton">
-<meta property="og:url" content="http://blog.cybermilly.com/posts/design-pattern-with-go-singleton/">
+<meta property="og:title" content="Design Pattern With Go: Factory">
+<meta property="og:url" content="http://blog.cybermilly.com/posts/design-pattern-with-go-factory/">
 <meta property="og:type" content="article">
 <meta property="og:description" content="Explore ideas!!">
 
@@ -1350,7 +1350,7 @@
 
 <meta name="apple-mobile-web-app-status-bar-style" content="#fff">
 
-<link rel="canonical" href="http://blog.cybermilly.com/posts/design-pattern-with-go-singleton/">
+<link rel="canonical" href="http://blog.cybermilly.com/posts/design-pattern-with-go-factory/">
 
 <link rel="manifest" href="/manifest.json">
 
@@ -1376,11 +1376,11 @@
   {
     "@context": "https://schema.org",
     "@type": "WebPage",
-    "headline": "Design Pattern With Go: Singleton",
-    "datePublished": "2021-03-22T11:58:09+08:00",
-    "dateModified": "2021-03-22T11:58:09+08:00",
-    "url" : "http://blog.cybermilly.com/posts/design-pattern-with-go-singleton/",
-    "description": "定义 一个类只允许创建一个对象（或者实例），那这个类就是一个单例类，这种设计模式就叫作单例模式。当某些数据只需要在系统中保留一份的时候，可以选",
+    "headline": "Design Pattern With Go: Factory",
+    "datePublished": "2021-03-25T15:06:14+08:00",
+    "dateModified": "2021-03-25T15:06:14+08:00",
+    "url" : "http://blog.cybermilly.com/posts/design-pattern-with-go-factory/",
+    "description": "这次介绍的设计模式是工厂模式，这是一个比较常见的创建型模式。一般情况下，工厂模式分为三种：简单工厂、工厂方法和抽象工厂，下面慢慢举例介绍下。",
     "keywords": ["golang","design-pattern"],
     "mainEntityOfPage": {
       "@type": "WebPage",
@@ -1434,7 +1434,7 @@ if (!doNotTrack) {
   <script>
     var dataLayer = window.dataLayer = window.dataLayer || [];
     dataLayer.push({
-      page:'Design Pattern With Go: Singleton',
+      page:'Design Pattern With Go: Factory',
       categories:'only examples about your dataLayer'
     });
   </script>
@@ -1713,7 +1713,7 @@ if (!doNotTrack) {
   
   <li  class="is-active" >
     
-      <span>Design Pattern With Go: Singleton</span>
+      <span>Design Pattern With Go: Factory</span>
     
   </li>
   
@@ -1725,14 +1725,14 @@ if (!doNotTrack) {
   <div class="single ">
     <div class="single__nojs">Please enable Javascript to view the contents</div>
     <script>document.querySelector('.single').classList.remove('hide'); document.querySelector('.single__nojs').classList.add('hide');</script>
-    <h2 class="single__title" data-ani="true">Design Pattern With Go: Singleton</h2>
+    <h2 class="single__title" data-ani="true">Design Pattern With Go: Factory</h2>
     <h3 class="single__subtitle"></h3>
     <div class="single__meta">
       
 <div class="single__infos">
-  <time class="single__info" title="创建日期">📅&nbsp;2021年03月22日 </time>
+  <time class="single__info" title="创建日期">📅&nbsp;2021年03月25日 </time>
   
-  &nbsp;&middot;&nbsp; <span class="single__info" title="阅读时长"> ☕&nbsp;3&nbsp;分钟 </span>
+  &nbsp;&middot;&nbsp; <span class="single__info" title="阅读时长"> ☕&nbsp;6&nbsp;分钟 </span>
   
   <span class="single__info">
      &middot; 👀<span id="busuanzi_value_page_pv">...</span> 阅读
@@ -1754,45 +1754,36 @@ if (!doNotTrack) {
     </div>
     <article class="single__contents" data-dir="ltr" data-ani="true">
       
-      <h2 id="定义">定义</h2>
-<p>一个类只允许创建一个对象（或者实例），那这个类就是一个单例类，这种设计模式就叫作单例模式。当某些数据只需要在系统中保留一份的时候，可以选择使用单例模式。</p>
-<h2 id="饿汉式">饿汉式</h2>
-<p>饿汉式的实现方式比较简单。在类加载的时候，静态实例就已经创建并初始化好了，所以，实例的创建过程是线程安全的。如果实例占用资源多，按照 fail-fast 的设计原则（有问题及早暴露），那我们也希望在程序启动时就将这个实例初始化好。如果资源不够，就会在程序启动的时候触发报错，我们可以立即去修复。这样也能避免在程序运行一段时间后，突然因为初始化这个实例占用资源过多，导致系统崩溃，影响系统的可用性。</p>
-<p>下面是一个典型的饿汉式单例模式：</p>
+      <p>这次介绍的设计模式是工厂模式，这是一个比较常见的创建型模式。一般情况下，工厂模式分为三种：简单工厂、工厂方法和抽象工厂，下面慢慢举例介绍下。</p>
+<h1 id="简单工厂">简单工厂</h1>
+<p>考虑一个加密程序的应用场景，一个加密程序可能提供了AES，DES等加密方法，这些加密方式都实现了同一个接口ICipher，它有两个方法分别是 Encript 和 Decript。我们使用加密程序的时候会希望简单的指定加密方式，然后传入原始数据以及必要参数，然后就能得到想要的加密数据。这个功能用简单工厂如何实现呢？</p>
+<h2 id="模式结构">模式结构</h2>
+<p>简单工厂模式包含一下几个角色：</p>
+<ul>
+<li>Factory（工厂角色），负责创建所有实例。</li>
+<li>Product（抽象产品角色），指工厂所创建的实例的基类，在 golang 中通常为接口。</li>
+<li>ConcreteProduce（具体产品），指工厂所创建的具体实例的类型。</li>
+</ul>
+<p>在这个加密程序的例子中，工厂角色的职责是返回加密函数；抽象产品角色是所有加密类的基类，在 golang 中是定义了加密类通用方法的接口；具体产品是指具体的加密类，如 AES、DES 等等。我们可以用 UML 关系图来表示这几个角色之间的关系：</p>
+<p><img src="https://raw.githubusercontent.com/LooJee/medias/master/images/20210329101034.png" alt="" /></p>
+<h2 id="代码设计">代码设计</h2>
+<p>依据 UML 关系图，我们可以设计出采用简单工厂模式的加密代码。首先是 ICipher 接口，定义了 Encript 和 Decript 两个方法：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">singleton</span>
-
-<span class="kn">import</span> <span class="s">&#34;sync/atomic&#34;</span>
-
-<span class="kd">type</span> <span class="nx">HungrySingleton</span> <span class="kd">struct</span> <span class="p">{</span>
-	<span class="nx">data</span> <span class="kt">uint64</span>
-<span class="p">}</span>
-
-<span class="kd">var</span> <span class="nx">hungry</span> <span class="p">=</span> <span class="o">&amp;</span><span class="nx">HungrySingleton</span><span class="p">{}</span>
-
-<span class="kd">func</span> <span class="nf">HungrySingletonInstance</span><span class="p">()</span> <span class="o">*</span><span class="nx">HungrySingleton</span> <span class="p">{</span>
-	<span class="k">return</span> <span class="nx">hungry</span>
+<pre class="chroma"><code class="language-golang" data-lang="golang"><span class="kd">type</span> <span class="nx">ICipher</span> <span class="kd">interface</span> <span class="p">{</span>
+	<span class="nf">Encrypt</span><span class="p">([]</span><span class="kt">byte</span><span class="p">)</span> <span class="p">([]</span><span class="kt">byte</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span>
+	<span class="nf">Decrypt</span><span class="p">([]</span><span class="kt">byte</span><span class="p">)</span> <span class="p">([]</span><span class="kt">byte</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span>
 <span class="p">}</span>
 </code></pre></td></tr></table>
 </div>
-</div><h2 id="懒汉式">懒汉式</h2>
-<p>懒汉式单例模式可以延迟加载类实例，如果想要在使用类实例的时候再创建，可以采用这种方式来实现单例模式。不过如果类实例初始化时间比较长，可能会对效率有一定的影响。</p>
+</div><p>然后根据这个接口，分别实现 AESCipher 和 DESCipher 两个加密类。</p>
+<p><strong>AESCipher</strong>:</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt"> 1
@@ -1810,49 +1801,90 @@ if (!doNotTrack) {
 </span><span class="lnt">13
 </span><span class="lnt">14
 </span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">singleton</span>
-
-<span class="kn">import</span> <span class="p">(</span>
-	<span class="s">&#34;sync&#34;</span>
-	<span class="s">&#34;sync/atomic&#34;</span>
-<span class="p">)</span>
-
-<span class="kd">type</span> <span class="nx">LazySingleton</span> <span class="kd">struct</span> <span class="p">{</span>
-	<span class="nx">data</span> <span class="kt">uint64</span>
+<pre class="chroma"><code class="language-golang" data-lang="golang"><span class="kd">type</span> <span class="nx">AESCipher</span> <span class="kd">struct</span> <span class="p">{</span>
 <span class="p">}</span>
 
-<span class="kd">var</span> <span class="nx">lazySingleton</span> <span class="o">*</span><span class="nx">LazySingleton</span>
-<span class="kd">var</span> <span class="nx">lock</span> <span class="nx">sync</span><span class="p">.</span><span class="nx">Mutex</span>
-
-<span class="kd">func</span> <span class="nf">init</span><span class="p">()</span> <span class="p">{</span>
-	<span class="nx">lock</span> <span class="p">=</span> <span class="nx">sync</span><span class="p">.</span><span class="nx">Mutex</span><span class="p">{}</span>
+<span class="kd">func</span> <span class="nf">NewAESCipher</span><span class="p">()</span> <span class="o">*</span><span class="nx">AESCipher</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="o">&amp;</span><span class="nx">AESCipher</span><span class="p">{}</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="nf">LazySingletonInstance</span><span class="p">()</span> <span class="o">*</span><span class="nx">LazySingleton</span> <span class="p">{</span>
-	<span class="nx">lock</span><span class="p">.</span><span class="nf">Lock</span><span class="p">()</span>
-	<span class="k">defer</span> <span class="nx">lock</span><span class="p">.</span><span class="nf">Unlock</span><span class="p">()</span>
-	<span class="k">if</span> <span class="nx">lazySingleton</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
-		<span class="nx">lazySingleton</span> <span class="p">=</span> <span class="o">&amp;</span><span class="nx">LazySingleton</span><span class="p">{}</span>
+<span class="kd">func</span> <span class="p">(</span><span class="nx">c</span> <span class="nx">AESCipher</span><span class="p">)</span> <span class="nf">Encrypt</span><span class="p">(</span><span class="nx">data</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="p">([]</span><span class="kt">byte</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="kc">nil</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">c</span> <span class="nx">AESCipher</span><span class="p">)</span> <span class="nf">Decrypt</span><span class="p">(</span><span class="nx">data</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="p">([]</span><span class="kt">byte</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="kc">nil</span>
+<span class="p">}</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>DESCipher</strong>:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-golang" data-lang="golang"><span class="kd">type</span> <span class="nx">DESCipher</span> <span class="kd">struct</span> <span class="p">{</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">NewDesCipher</span><span class="p">()</span> <span class="o">*</span><span class="nx">DESCipher</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="o">&amp;</span><span class="nx">DESCipher</span><span class="p">{}</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">c</span> <span class="nx">DESCipher</span><span class="p">)</span> <span class="nf">Encrypt</span><span class="p">(</span><span class="nx">data</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="p">([]</span><span class="kt">byte</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="kc">nil</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">c</span> <span class="nx">DESCipher</span><span class="p">)</span> <span class="nf">Decrypt</span><span class="p">(</span><span class="nx">data</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="p">([]</span><span class="kt">byte</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="kc">nil</span>
+<span class="p">}</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><p>最后是一个工厂角色，根据传入的参数返回对应的加密类，Java 需要实现一个工厂类，这里我们用一个函数来做加密类工厂：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-golang" data-lang="golang"><span class="kd">func</span> <span class="nf">CipherFactory</span><span class="p">(</span><span class="nx">cType</span> <span class="kt">string</span><span class="p">)</span> <span class="nx">ICipher</span> <span class="p">{</span>
+	<span class="k">switch</span> <span class="nx">cType</span> <span class="p">{</span>
+	<span class="k">case</span> <span class="s">&#34;AES&#34;</span><span class="p">:</span>
+		<span class="k">return</span> <span class="nf">NewAESCipher</span><span class="p">()</span>
+	<span class="k">case</span> <span class="s">&#34;DES&#34;</span><span class="p">:</span>
+		<span class="k">return</span> <span class="nf">NewDesCipher</span><span class="p">()</span>
+	<span class="k">default</span><span class="p">:</span>
+		<span class="k">return</span> <span class="kc">nil</span>
 	<span class="p">}</span>
-	<span class="k">return</span> <span class="nx">lazySingleton</span>
 <span class="p">}</span>
 </code></pre></td></tr></table>
 </div>
-</div><h2 id="双重检测懒汉式">双重检测懒汉式</h2>
-<p>上面面这种实现方式比较简单粗暴，每次获取实例的时候都需要加锁，这会大大增加时间开销，效率十分低下。我们可以改进下，创建实例的时候，先判断实例是否已经创建，如果没有创建再进入创建流程，这样会减少等锁的次数，增加效率。</p>
+</div><p>这样，通过调用 CipherFactory 传入所需的加密类型，就可以得到所需要的加密类实例了。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt"> 1
@@ -1871,100 +1903,443 @@ if (!doNotTrack) {
 </span><span class="lnt">14
 </span><span class="lnt">15
 </span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">singleton</span>
-
-<span class="kn">import</span> <span class="s">&#34;sync&#34;</span>
-
-<span class="kd">type</span> <span class="nx">LockCheckLazySingleton</span> <span class="kd">struct</span> <span class="p">{</span>
-	<span class="nx">data</span> <span class="kt">int64</span>
-<span class="p">}</span>
-
-<span class="kd">var</span> <span class="nx">ll</span> <span class="nx">sync</span><span class="p">.</span><span class="nx">Mutex</span>
-<span class="kd">var</span> <span class="nx">lcSingleton</span> <span class="o">*</span><span class="nx">LockCheckLazySingleton</span>
-
-<span class="kd">func</span> <span class="nf">init</span><span class="p">()</span> <span class="p">{</span>
-	<span class="nx">ll</span> <span class="p">=</span> <span class="nx">sync</span><span class="p">.</span><span class="nx">Mutex</span><span class="p">{}</span>
-<span class="p">}</span>
-
-<span class="kd">func</span> <span class="nf">LockCheckLazySingletonInstance</span><span class="p">()</span> <span class="o">*</span><span class="nx">LockCheckLazySingleton</span> <span class="p">{</span>
-	<span class="k">if</span> <span class="nx">lcSingleton</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
-		<span class="nx">ll</span><span class="p">.</span><span class="nf">Lock</span><span class="p">()</span>
-		<span class="k">defer</span> <span class="nx">ll</span><span class="p">.</span><span class="nf">Unlock</span><span class="p">()</span>
-		<span class="k">if</span> <span class="nx">lcSingleton</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
-			<span class="nx">lcSingleton</span> <span class="p">=</span> <span class="o">&amp;</span><span class="nx">LockCheckLazySingleton</span><span class="p">{}</span>
-		<span class="p">}</span>
-	<span class="p">}</span>
-	<span class="k">return</span> <span class="nx">lcSingleton</span>
-<span class="p">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><p>在 golang 中，我们可以使用 sync.Once 来简化判断流程：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">singleton</span>
-
-<span class="kn">import</span> <span class="p">(</span>
-	<span class="s">&#34;sync&#34;</span>
-	<span class="s">&#34;sync/atomic&#34;</span>
-<span class="p">)</span>
-
-<span class="kd">type</span> <span class="nx">CheckLazySingleton</span> <span class="kd">struct</span> <span class="p">{</span>
-	<span class="nx">data</span> <span class="kt">uint64</span>
-<span class="p">}</span>
-
-<span class="kd">var</span> <span class="nx">checkLazySingleton</span> <span class="o">*</span><span class="nx">CheckLazySingleton</span>
-<span class="kd">var</span> <span class="nx">checkOnce</span> <span class="p">=</span> <span class="nx">sync</span><span class="p">.</span><span class="nx">Once</span><span class="p">{}</span>
-
-<span class="kd">func</span> <span class="nf">CheckLazySingletonInstance</span><span class="p">()</span> <span class="o">*</span><span class="nx">CheckLazySingleton</span> <span class="p">{</span>
-	<span class="k">if</span> <span class="nx">checkLazySingleton</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
-		<span class="nx">checkOnce</span><span class="p">.</span><span class="nf">Do</span><span class="p">(</span><span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
-			<span class="nx">checkLazySingleton</span> <span class="p">=</span> <span class="o">&amp;</span><span class="nx">CheckLazySingleton</span><span class="p">{}</span>
-		<span class="p">})</span>
+<pre class="chroma"><code class="language-golang" data-lang="golang"><span class="kd">func</span> <span class="nf">TestCipherFactory</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">T</span><span class="p">)</span> <span class="p">{</span>
+	<span class="nx">c</span> <span class="o">:=</span> <span class="nf">CipherFactory</span><span class="p">(</span><span class="s">&#34;RSA&#34;</span><span class="p">)</span>
+	<span class="k">if</span> <span class="nx">c</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+		<span class="nx">t</span><span class="p">.</span><span class="nf">Fatalf</span><span class="p">(</span><span class="s">&#34;unsupport RSA&#34;</span><span class="p">)</span>
 	<span class="p">}</span>
 
-	<span class="k">return</span> <span class="nx">checkLazySingleton</span>
+	<span class="nx">c</span> <span class="p">=</span> <span class="nf">CipherFactory</span><span class="p">(</span><span class="s">&#34;AES&#34;</span><span class="p">)</span>
+	<span class="k">if</span> <span class="nx">reflect</span><span class="p">.</span><span class="nf">TypeOf</span><span class="p">(</span><span class="nx">c</span><span class="p">)</span> <span class="o">!=</span> <span class="nx">reflect</span><span class="p">.</span><span class="nf">TypeOf</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">AESCipher</span><span class="p">{})</span> <span class="p">{</span>
+		<span class="nx">t</span><span class="p">.</span><span class="nf">Fatalf</span><span class="p">(</span><span class="s">&#34;cipher type should be AES&#34;</span><span class="p">)</span>
+	<span class="p">}</span>
+
+	<span class="nx">c</span> <span class="p">=</span> <span class="nf">CipherFactory</span><span class="p">(</span><span class="s">&#34;DES&#34;</span><span class="p">)</span>
+	<span class="k">if</span> <span class="nx">reflect</span><span class="p">.</span><span class="nf">TypeOf</span><span class="p">(</span><span class="nx">c</span><span class="p">)</span> <span class="o">!=</span> <span class="nx">reflect</span><span class="p">.</span><span class="nf">TypeOf</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">DESCipher</span><span class="p">{})</span> <span class="p">{</span>
+		<span class="nx">t</span><span class="p">.</span><span class="nf">Fatalf</span><span class="p">(</span><span class="s">&#34;cipher type should be DES&#34;</span><span class="p">)</span>
+	<span class="p">}</span>
 <span class="p">}</span>
 </code></pre></td></tr></table>
 </div>
-</div><p>sync.Once 使用原子操作来模拟锁的效果，来判断实例是否已经创建，和 LockCheckLazySingleton 中直接判断实例相比，并没有太多的性能开销，反而还可以避免并发时更多的运行实例进入等锁的状态，这种方式理论上效率会比上面那种方式更高一点。</p>
-<h2 id="性能测试">性能测试</h2>
-<p>我们可以编写一个 benchmark 测试一下这几种单例模式实现方式的效率怎么样：</p>
+</div><h2 id="小结">小结</h2>
+<p>简单工厂将业务代码和创建实例的代码分离，使职责更加单一。不过，它将所有创建实例的代码都放到了 CipherFactory 中，当加密类增加的时候会增加工厂函数的复杂度，产品类型增加时需要更新工厂函数这一操作也是违反了“开闭原则”，所以简单工厂更适合负责创建的对象比较少的场景。</p>
+<h1 id="工厂方法">工厂方法</h1>
+<p>为了让代码更加符合“开闭原则”，我们可以给每个产品都增加一个工厂子类，每个子类生成具体的产品实例，将工厂方法化，也就是现在要介绍的工厂方法模式。</p>
+<h2 id="模式结构-1">模式结构</h2>
+<p>工厂方法和和简单工厂相比，将工厂角色细分成抽象工厂和具体工厂：</p>
+<ul>
+<li>Product（抽象产品）：定义产品的接口。</li>
+<li>ConcreteFactory（具体产品）：具体的产品实例。</li>
+<li>Factory（抽象工厂）：定义工厂的接口。</li>
+<li>ConcreteFactory（具体工厂）：实现抽象工厂，生产具体产品。</li>
+</ul>
+<p>可以使用如下的 UML 图来表示这几个角色直接的关系：<br />
+<img src="https://raw.githubusercontent.com/LooJee/medias/master/images/20210329142446.png" alt="" /></p>
+<h2 id="代码设计-1">代码设计</h2>
+<p>抽象产品角色和具体产品角色就不再定义了，和简单工厂相同，具体展示一下抽象工厂角色和具体工厂角色。<br />
+抽象工厂角色定义了一个方法，用于创建对应的产品：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-golang" data-lang="golang"><span class="kd">type</span> <span class="nx">ICipherFactory</span> <span class="kd">interface</span> <span class="p">{</span>
+	<span class="nf">GetCipher</span><span class="p">()</span> <span class="nx">ICipher</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>根据这个接口，分别定义出 AESCipherFactory、和 DESCipherFactory 两个子类工厂。</p>
+<p><strong>AESCipherFactory</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-golang" data-lang="golang"><span class="kd">type</span> <span class="nx">AESCipherFactory</span> <span class="kd">struct</span> <span class="p">{</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">AESCipherFactory</span><span class="p">)</span> <span class="nf">GetCipher</span><span class="p">()</span> <span class="nx">ICipher</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="nf">NewAESCipher</span><span class="p">()</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">NewAESCipherFactory</span><span class="p">()</span> <span class="o">*</span><span class="nx">AESCipherFactory</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="o">&amp;</span><span class="nx">AESCipherFactory</span><span class="p">{}</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>DESCipherFactory</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-golang" data-lang="golang"><span class="kd">type</span> <span class="nx">DESCipherFactory</span> <span class="kd">struct</span> <span class="p">{</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">DESCipherFactory</span><span class="p">)</span> <span class="nf">GetCipher</span><span class="p">()</span> <span class="nx">ICipher</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="nf">NewDESCipher</span><span class="p">()</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">NewDESCipherFactory</span><span class="p">()</span> <span class="o">*</span><span class="nx">DESCipherFactory</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="o">&amp;</span><span class="nx">DESCipherFactory</span><span class="p">{}</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>然后编写一个单元测试来检验我们的代码：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-golang" data-lang="golang"><span class="kd">func</span> <span class="nf">TestCipherFactory</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">T</span><span class="p">)</span> <span class="p">{</span>
+	<span class="kd">var</span> <span class="nx">f</span> <span class="nx">ICipherFactory</span> <span class="p">=</span> <span class="nf">NewAESCipherFactory</span><span class="p">()</span>
+	<span class="k">if</span> <span class="nx">reflect</span><span class="p">.</span><span class="nf">TypeOf</span><span class="p">(</span><span class="nx">f</span><span class="p">.</span><span class="nf">GetCipher</span><span class="p">())</span> <span class="o">!=</span> <span class="nx">reflect</span><span class="p">.</span><span class="nf">TypeOf</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">AESCipher</span><span class="p">{})</span> <span class="p">{</span>
+		<span class="nx">t</span><span class="p">.</span><span class="nf">Fatalf</span><span class="p">(</span><span class="s">&#34;should be AESCipher&#34;</span><span class="p">)</span>
+	<span class="p">}</span>
+
+	<span class="nx">f</span> <span class="p">=</span> <span class="nf">NewDESCipherFactory</span><span class="p">()</span>
+	<span class="k">if</span> <span class="nx">reflect</span><span class="p">.</span><span class="nf">TypeOf</span><span class="p">(</span><span class="nx">f</span><span class="p">.</span><span class="nf">GetCipher</span><span class="p">())</span> <span class="o">!=</span> <span class="nx">reflect</span><span class="p">.</span><span class="nf">TypeOf</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">DESCipher</span><span class="p">{})</span> <span class="p">{</span>
+		<span class="nx">t</span><span class="p">.</span><span class="nf">Fatalf</span><span class="p">(</span><span class="s">&#34;should be DESCipher&#34;</span><span class="p">)</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="小结-1">小结</h2>
+<p>在工厂方法模式中，定义了一个工厂接口，然后根据各个产品子类定义实现这个接口的子类工厂，通过子类工厂来返回产品实例。这样修改创建实例代码只需要修改子类工厂，新增实例时只需要新增具体工厂和具体产品，而不需要修改其它代码，符合“开闭原则”。不过，当具体产品较多的时候，系统中类的数量也会成倍的增加，一定程度上增加了系统的复杂度。而且，在实际使用场景中，可能还需要使用反射等技术，增加了代码的抽象性和理解难度。</p>
+<h1 id="抽象工厂">抽象工厂</h1>
+<p>下面再用加密这个例子可能不太好，不过我们假设需求都合理吧。现在需求更加细化了，分别需要 64 位 key 和 128 位 key 的 AES 加密库以及 64 位 key 和 128 位 key 的 DES 加密库。如果使用工厂方法模式，我们一共需要定义 4 个具体工厂和 4 个具体产品。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-golang" data-lang="golang"><span class="nx">AESCipher64</span>
+<span class="nx">AESCipher128</span>
+<span class="nx">AESCipherFactory64</span>
+<span class="nx">AESCipherFactory128</span>
+<span class="nx">DESCipher64</span>
+<span class="nx">DESCipher128</span>
+<span class="nx">DESCipherFactory64</span>
+<span class="nx">DESCipherFactory128</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>这时候，我们可以把有关联性的具体产品组合成一个产品组，例如AESCipher64 和 AESCipher128，让它们通过同一个工厂 AESCipherFactory 来生产，这样就可以简化成 2 个具体工厂和 4 个具体产品</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-golang" data-lang="golang"><span class="nx">AESCipher64</span>
+<span class="nx">AESCipher128</span>
+<span class="nx">AESCipherFactory</span>
+<span class="nx">DESCipher64</span>
+<span class="nx">DESCipher128</span>
+<span class="nx">DESCipherFactory</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>这就是抽象工厂模式。</p>
+<h2 id="模式结构-2">模式结构</h2>
+<p>抽象工厂共有 4 个角色：</p>
+<ul>
+<li>AbstractFactory（抽象工厂）：定义工厂的接口。</li>
+<li>ConcreteFactory（具体工厂）：实现抽象工厂，生产具体产品。</li>
+<li>AbstractProduct（抽象产品）：定义产品的接口。</li>
+<li>Product（具体产品）：具体的产品实例。</li>
+</ul>
+<p>根据角色定义我们可以画出抽象工厂的 UML 关系图：<br />
+<img src="https://raw.githubusercontent.com/LooJee/medias/master/images/20210329162259.png" alt="" /></p>
+<h2 id="代码设计-2">代码设计</h2>
+<p>抽象产品和具体产品的定义与工厂方法类似：</p>
+<p><strong>抽象产品</strong>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-golang" data-lang="golang"><span class="kd">type</span> <span class="nx">ICipher</span> <span class="kd">interface</span> <span class="p">{</span>
+	<span class="nf">Encrypt</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">key</span><span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="p">([]</span><span class="kt">byte</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span>
+	<span class="nf">Decrypt</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">key</span><span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="p">([]</span><span class="kt">byte</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>AESCipher64</strong>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-golang" data-lang="golang"><span class="kd">type</span> <span class="nx">AESCipher64</span> <span class="kd">struct</span> <span class="p">{</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">NewAESCipher64</span><span class="p">()</span> <span class="o">*</span><span class="nx">AESCipher64</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="o">&amp;</span><span class="nx">AESCipher64</span><span class="p">{}</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">AESCipher64</span><span class="p">)</span> <span class="nf">Encrypt</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">key</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="p">([]</span><span class="kt">byte</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="kc">nil</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">AESCipher64</span><span class="p">)</span> <span class="nf">Decrypt</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">key</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="p">([]</span><span class="kt">byte</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="kc">nil</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>AESCipher128</strong>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-golang" data-lang="golang">
+<span class="kd">type</span> <span class="nx">AESCipher128</span> <span class="kd">struct</span> <span class="p">{</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">NewAESCipher128</span><span class="p">()</span> <span class="o">*</span><span class="nx">AESCipher128</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="o">&amp;</span><span class="nx">AESCipher128</span><span class="p">{}</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">AESCipher128</span><span class="p">)</span> <span class="nf">Encrypt</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">key</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="p">([]</span><span class="kt">byte</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="kc">nil</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">AESCipher128</span><span class="p">)</span> <span class="nf">Decrypt</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">key</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="p">([]</span><span class="kt">byte</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="kc">nil</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>AESCipher128</strong>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-golang" data-lang="golang"><span class="kd">type</span> <span class="nx">c</span> <span class="kd">struct</span> <span class="p">{</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">NewDESCipher64</span><span class="p">()</span> <span class="o">*</span><span class="nx">DESCipher64</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="o">&amp;</span><span class="nx">DESCipher64</span><span class="p">{}</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">DESCipher64</span><span class="p">)</span> <span class="nf">Encrypt</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">key</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="p">([]</span><span class="kt">byte</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="kc">nil</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">DESCipher64</span><span class="p">)</span> <span class="nf">Decrypt</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">key</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="p">([]</span><span class="kt">byte</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="kc">nil</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>DESCipher128</strong>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-golang" data-lang="golang"><span class="kd">type</span> <span class="nx">DESCipher128</span> <span class="kd">struct</span> <span class="p">{</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">NewDESCipher128</span><span class="p">()</span> <span class="o">*</span><span class="nx">DESCipher128</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="o">&amp;</span><span class="nx">DESCipher128</span><span class="p">{}</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">DESCipher128</span><span class="p">)</span> <span class="nf">Encrypt</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">key</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="p">([]</span><span class="kt">byte</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="kc">nil</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">DESCipher128</span><span class="p">)</span> <span class="nf">Decrypt</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">key</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="p">([]</span><span class="kt">byte</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="kc">nil</span>
+<span class="p">}</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><p>抽象工厂角色和工厂方法相比需要增加 GetCipher64 和 GetCipher128 两个方法定义：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-golang" data-lang="golang"><span class="kd">type</span> <span class="nx">ICipherFactory</span> <span class="kd">interface</span> <span class="p">{</span>
+	<span class="nf">GetCipher64</span><span class="p">()</span> <span class="nx">ICipher</span>
+	<span class="nf">GetCipher128</span><span class="p">()</span> <span class="nx">ICipher</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>然后分别实现 AESCipherFactory 和 DesCipherFactory 两个具体工厂：</p>
+<p><strong>AESCipherFactory</strong>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-golang" data-lang="golang"><span class="kd">type</span> <span class="nx">AESCipherFactory</span> <span class="kd">struct</span> <span class="p">{</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">AESCipherFactory</span><span class="p">)</span> <span class="nf">GetCipher64</span><span class="p">()</span> <span class="nx">ICipher</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="nf">NewAESCipher64</span><span class="p">()</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">AESCipherFactory</span><span class="p">)</span> <span class="nf">GetCipher128</span><span class="p">()</span> <span class="nx">ICipher</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="nf">NewAESCipher128</span><span class="p">()</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">NewAESCipherFactory</span><span class="p">()</span> <span class="o">*</span><span class="nx">AESCipherFactory</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="o">&amp;</span><span class="nx">AESCipherFactory</span><span class="p">{}</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>DESCipherFactory</strong>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-golang" data-lang="golang"><span class="kd">type</span> <span class="nx">DESCipherFactory</span> <span class="kd">struct</span> <span class="p">{</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">DESCipherFactory</span><span class="p">)</span> <span class="nf">GetCipher64</span><span class="p">()</span> <span class="nx">ICipher</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="nf">NewDESCipher64</span><span class="p">()</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">DESCipherFactory</span><span class="p">)</span> <span class="nf">GetCipher128</span><span class="p">()</span> <span class="nx">ICipher</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="nf">NewDESCipher128</span><span class="p">()</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">NewDESCipherFactory</span><span class="p">()</span> <span class="o">*</span><span class="nx">DESCipherFactory</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="o">&amp;</span><span class="nx">DESCipherFactory</span><span class="p">{}</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>编写单元测试验证我们的代码：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt"> 1
@@ -1986,112 +2361,33 @@ if (!doNotTrack) {
 </span><span class="lnt">17
 </span><span class="lnt">18
 </span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">BenchmarkHungrySingletonInstance</span><span class="p">(</span><span class="nx">b</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">B</span><span class="p">)</span> <span class="p">{</span>
-	<span class="nx">b</span><span class="p">.</span><span class="nf">RunParallel</span><span class="p">(</span><span class="kd">func</span><span class="p">(</span><span class="nx">pb</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">PB</span><span class="p">)</span> <span class="p">{</span>
-		<span class="k">for</span> <span class="nx">pb</span><span class="p">.</span><span class="nf">Next</span><span class="p">()</span> <span class="p">{</span>
-			<span class="k">if</span> <span class="nx">singleton</span><span class="p">.</span><span class="nf">HungrySingletonInstance</span><span class="p">()</span> <span class="o">!=</span> <span class="nx">singleton</span><span class="p">.</span><span class="nf">HungrySingletonInstance</span><span class="p">()</span> <span class="p">{</span>
-				<span class="nx">b</span><span class="p">.</span><span class="nf">Errorf</span><span class="p">(</span><span class="s">&#34;different instance&#34;</span><span class="p">)</span>
-			<span class="p">}</span>
-		<span class="p">}</span>
-	<span class="p">})</span>
-<span class="p">}</span>
+<pre class="chroma"><code class="language-golang" data-lang="golang"><span class="kd">func</span> <span class="nf">TestAbstractFactory</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">T</span><span class="p">)</span> <span class="p">{</span>
+	<span class="kd">var</span> <span class="nx">f</span> <span class="p">=</span> <span class="nf">NewCipherFactory</span><span class="p">(</span><span class="s">&#34;AES&#34;</span><span class="p">)</span>
+	<span class="k">if</span> <span class="nx">reflect</span><span class="p">.</span><span class="nf">TypeOf</span><span class="p">(</span><span class="nx">f</span><span class="p">.</span><span class="nf">GetCipher64</span><span class="p">())</span> <span class="o">!=</span> <span class="nx">reflect</span><span class="p">.</span><span class="nf">TypeOf</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">AESCipher64</span><span class="p">{})</span> <span class="p">{</span>
+		<span class="nx">t</span><span class="p">.</span><span class="nf">Fatalf</span><span class="p">(</span><span class="s">&#34;should be AESCipher64&#34;</span><span class="p">)</span>
+	<span class="p">}</span>
 
-<span class="kd">func</span> <span class="nf">BenchmarkLazySingletonInstance</span><span class="p">(</span><span class="nx">b</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">B</span><span class="p">)</span> <span class="p">{</span>
-	<span class="nx">b</span><span class="p">.</span><span class="nf">RunParallel</span><span class="p">(</span><span class="kd">func</span><span class="p">(</span><span class="nx">pb</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">PB</span><span class="p">)</span> <span class="p">{</span>
-		<span class="k">for</span> <span class="nx">pb</span><span class="p">.</span><span class="nf">Next</span><span class="p">()</span> <span class="p">{</span>
-			<span class="k">if</span> <span class="nx">singleton</span><span class="p">.</span><span class="nf">LazySingletonInstance</span><span class="p">()</span> <span class="o">!=</span> <span class="nx">singleton</span><span class="p">.</span><span class="nf">LazySingletonInstance</span><span class="p">()</span> <span class="p">{</span>
-				<span class="nx">b</span><span class="p">.</span><span class="nf">Errorf</span><span class="p">(</span><span class="s">&#34;different instance&#34;</span><span class="p">)</span>
-			<span class="p">}</span>
-		<span class="p">}</span>
-	<span class="p">})</span>
-<span class="p">}</span>
+	<span class="k">if</span> <span class="nx">reflect</span><span class="p">.</span><span class="nf">TypeOf</span><span class="p">(</span><span class="nx">f</span><span class="p">.</span><span class="nf">GetCipher128</span><span class="p">())</span> <span class="o">!=</span> <span class="nx">reflect</span><span class="p">.</span><span class="nf">TypeOf</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">AESCipher128</span><span class="p">{})</span> <span class="p">{</span>
+		<span class="nx">t</span><span class="p">.</span><span class="nf">Fatalf</span><span class="p">(</span><span class="s">&#34;should be AESCipher128&#34;</span><span class="p">)</span>
+	<span class="p">}</span>
 
-<span class="kd">func</span> <span class="nf">BenchmarkLockCheckLazySingletonInstance</span><span class="p">(</span><span class="nx">b</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">B</span><span class="p">)</span> <span class="p">{</span>
-	<span class="nx">b</span><span class="p">.</span><span class="nf">RunParallel</span><span class="p">(</span><span class="kd">func</span><span class="p">(</span><span class="nx">pb</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">PB</span><span class="p">)</span> <span class="p">{</span>
-		<span class="k">for</span> <span class="nx">pb</span><span class="p">.</span><span class="nf">Next</span><span class="p">()</span> <span class="p">{</span>
-			<span class="k">if</span> <span class="nx">singleton</span><span class="p">.</span><span class="nf">LockCheckLazySingletonInstance</span><span class="p">()</span> <span class="o">!=</span> <span class="nx">singleton</span><span class="p">.</span><span class="nf">LockCheckLazySingletonInstance</span><span class="p">()</span> <span class="p">{</span>
-				<span class="nx">b</span><span class="p">.</span><span class="nf">Errorf</span><span class="p">(</span><span class="s">&#34;different instance&#34;</span><span class="p">)</span>
-			<span class="p">}</span>
-		<span class="p">}</span>
-	<span class="p">})</span>
-<span class="p">}</span>
+	<span class="nx">f</span> <span class="p">=</span> <span class="nf">NewCipherFactory</span><span class="p">(</span><span class="s">&#34;DES&#34;</span><span class="p">)</span>
+	<span class="k">if</span> <span class="nx">reflect</span><span class="p">.</span><span class="nf">TypeOf</span><span class="p">(</span><span class="nx">f</span><span class="p">.</span><span class="nf">GetCipher64</span><span class="p">())</span> <span class="o">!=</span> <span class="nx">reflect</span><span class="p">.</span><span class="nf">TypeOf</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">DESCipher64</span><span class="p">{})</span> <span class="p">{</span>
+		<span class="nx">t</span><span class="p">.</span><span class="nf">Fatalf</span><span class="p">(</span><span class="s">&#34;should be DESCipher64&#34;</span><span class="p">)</span>
+	<span class="p">}</span>
 
-<span class="kd">func</span> <span class="nf">BenchmarkCheckLazySingletonInstance</span><span class="p">(</span><span class="nx">b</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">B</span><span class="p">)</span> <span class="p">{</span>
-	<span class="nx">b</span><span class="p">.</span><span class="nf">RunParallel</span><span class="p">(</span><span class="kd">func</span><span class="p">(</span><span class="nx">pb</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">PB</span><span class="p">)</span> <span class="p">{</span>
-		<span class="k">for</span> <span class="nx">pb</span><span class="p">.</span><span class="nf">Next</span><span class="p">()</span> <span class="p">{</span>
-			<span class="k">if</span> <span class="nx">singleton</span><span class="p">.</span><span class="nf">CheckLazySingletonInstance</span><span class="p">()</span> <span class="o">!=</span> <span class="nx">singleton</span><span class="p">.</span><span class="nf">CheckLazySingletonInstance</span><span class="p">()</span> <span class="p">{</span>
-				<span class="nx">b</span><span class="p">.</span><span class="nf">Errorf</span><span class="p">(</span><span class="s">&#34;different instance&#34;</span><span class="p">)</span>
-			<span class="p">}</span>
-		<span class="p">}</span>
-	<span class="p">})</span>
+	<span class="k">if</span> <span class="nx">reflect</span><span class="p">.</span><span class="nf">TypeOf</span><span class="p">(</span><span class="nx">f</span><span class="p">.</span><span class="nf">GetCipher128</span><span class="p">())</span> <span class="o">!=</span> <span class="nx">reflect</span><span class="p">.</span><span class="nf">TypeOf</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">DESCipher128</span><span class="p">{})</span> <span class="p">{</span>
+		<span class="nx">t</span><span class="p">.</span><span class="nf">Fatalf</span><span class="p">(</span><span class="s">&#34;should be DESCipher128&#34;</span><span class="p">)</span>
+	<span class="p">}</span>
 <span class="p">}</span>
 </code></pre></td></tr></table>
 </div>
-</div><p>输出结果如下所示：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="n">D:</span><span class="p">\</span><span class="n">git</span><span class="p">\</span><span class="n">design-pattern</span><span class="p">\</span><span class="n">singleton</span><span class="p">&gt;</span><span class="n">go</span> <span class="n">test</span> <span class="n">-bench</span><span class="p">=.</span>
-<span class="n">goos</span><span class="err">:</span> <span class="n">windows</span>
-<span class="n">goarch</span><span class="err">:</span> <span class="n">amd64</span>
-<span class="n">pkg</span><span class="err">:</span> <span class="n">design-pattern</span><span class="p">/</span><span class="n">singleton</span>
-<span class="n">cpu</span><span class="err">:</span> <span class="n">Intel</span><span class="p">(</span><span class="n">R</span><span class="p">)</span> <span class="n">Core</span><span class="p">(</span><span class="n">TM</span><span class="p">)</span> <span class="n">i5</span><span class="p">-</span><span class="n">7200U</span> <span class="n">CPU</span> <span class="p">@</span> <span class="n">2</span><span class="p">.</span><span class="n">50GHz</span>
-<span class="n">BenchmarkHungrySingletonInstance</span><span class="p">-</span><span class="n">4</span>              <span class="n">1000000000</span>               <span class="n">0</span><span class="p">.</span><span class="n">5729</span> <span class="n">ns</span><span class="p">/</span><span class="n">op</span>
-<span class="n">BenchmarkLazySingletonInstance</span><span class="p">-</span><span class="n">4</span>                <span class="n">17065185</span>                <span class="n">71</span><span class="p">.</span><span class="n">58</span> <span class="n">ns</span><span class="p">/</span><span class="n">op</span>
-<span class="n">BenchmarkLockCheckLazySingletonInstance</span><span class="p">-</span><span class="n">4</span>       <span class="n">377396236</span>                <span class="n">2</span><span class="p">.</span><span class="n">878</span> <span class="n">ns</span><span class="p">/</span><span class="n">op</span>
-<span class="n">BenchmarkCheckLazySingletonInstance</span><span class="p">-</span><span class="n">4</span>           <span class="n">536262001</span>                <span class="n">2</span><span class="p">.</span><span class="n">330</span> <span class="n">ns</span><span class="p">/</span><span class="n">op</span>
-<span class="n">PASS</span>
-<span class="n">ok</span>      <span class="n">design-pattern</span><span class="p">/</span><span class="n">singleton</span>        <span class="n">4</span><span class="p">.</span><span class="n">733s</span>
-
-</code></pre></td></tr></table>
-</div>
-</div><p>我们可以看到，饿汉模式的效率是最高的，因为它的实例是在程序启动的时候就已经初始化好了，调用实例的过程省去了很多判断的过程。而直接加锁的懒汉模式是效率最低的，锁的开销是十分大的，实际使用中，如果有需要使用懒汉式的单例模式，也不推荐这种实现方式。后面两种优化的懒汉模式中，使用 once 的效率会更高一点，这种实现方式更加值得推荐。</p>
-<h2 id="单例模式的问题及替代方案">单例模式的问题及替代方案</h2>
-<h3 id="单例模式的问题">单例模式的问题</h3>
-<ol>
-<li>单例对 OOP 特性（封装、继承、多态、抽象）的支持不友好。单例模式违反了基于接口而非实现的设计原则。</li>
-<li>单例会隐藏类之间的依赖关系。单例类不需要显示创建、不需要依赖参数传递，在代码比较复杂的情况下，调用关系就会非常隐蔽。</li>
-<li>单例对代码的扩展性不友好，在某些情况下会影响代码的扩展性、灵活性。</li>
-<li>单例对代码的可测试性不友好。单例类持有的变量通常是全局变量，被所有的代码共享，这不方便编写单元测试。</li>
-<li>单例不支持有参数的构造函数，因为单例类的对象只初始化一次，即使构造函数有参数也只接收第一次的参数。</li>
-</ol>
-<h3 id="替代方案">替代方案</h3>
-<p>可以通过工厂模式、IOC容器（JAVA）等方式</p>
+</div><h2 id="小结-2">小结</h2>
+<p>抽象工厂模式也符合单一职责原则和开闭原则，不过需要引入大量的类和接口，使代码更加复杂。并且，当增加新的具体产品时，需要修改抽象工厂和所有的具体工厂。</p>
+<h1 id="总结">总结</h1>
+<p>今天介绍了创建型模式之工厂模式，工厂模式包括简单工厂、工厂方法和抽象工厂。简单工厂的复杂性比较低，但是不像工厂方法和抽象工厂符合单一职责原则和开闭原则。实际使用时，通常会选择符合开闭原则，复杂度也不是特别高的工厂方法。如果有特别需求可以选择使用抽象工厂。</p>
 
     </article>
     
@@ -2291,7 +2587,7 @@ if (!doNotTrack) {
     
     
       
-        <a href="https://twitter.com/intent/tweet?text=Design%20Pattern%20With%20Go%3a%20Singleton&url=http%3a%2f%2fblog.cybermilly.com%2fposts%2fdesign-pattern-with-go-singleton%2f&hashtags=golang%2cdesign-pattern&via=" title="Twitter" aria-label="Twitter Share Button" class="donation__item" target="_blank" rel="noreferrer" data-type="share">
+        <a href="https://twitter.com/intent/tweet?text=Design%20Pattern%20With%20Go%3a%20Factory&url=http%3a%2f%2fblog.cybermilly.com%2fposts%2fdesign-pattern-with-go-factory%2f&hashtags=golang%2cdesign-pattern&via=" title="Twitter" aria-label="Twitter Share Button" class="donation__item" target="_blank" rel="noreferrer" data-type="share">
           <svg data-name="twitter" enable-background="new 0 0 24 24" viewBox="0 0 24 24" width="35" height="35" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="m21.534 7.113c.976-.693 1.797-1.558 2.466-2.554v-.001c-.893.391-1.843.651-2.835.777 1.02-.609 1.799-1.566 2.165-2.719-.951.567-2.001.967-3.12 1.191-.903-.962-2.19-1.557-3.594-1.557-2.724 0-4.917 2.211-4.917 4.921 0 .39.033.765.114 1.122-4.09-.2-7.71-2.16-10.142-5.147-.424.737-.674 1.58-.674 2.487 0 1.704.877 3.214 2.186 4.089-.791-.015-1.566-.245-2.223-.606v.054c0 2.391 1.705 4.377 3.942 4.835-.401.11-.837.162-1.29.162-.315 0-.633-.018-.931-.084.637 1.948 2.447 3.381 4.597 3.428-1.674 1.309-3.8 2.098-6.101 2.098-.403 0-.79-.018-1.177-.067 2.18 1.405 4.762 2.208 7.548 2.208 8.683 0 14.342-7.244 13.986-14.637z"/></svg>
         </a>
       
@@ -2429,6 +2725,10 @@ if (!doNotTrack) {
     <ul class="related-ul">
         
         <li>
+          <a href="/posts/design-pattern-with-go-singleton/" class="related__link">Design Pattern With Go: Singleton</a>
+        </li>
+        
+        <li>
           <a href="/posts/%E5%88%9D%E8%AF%86golang%E4%B8%AD%E7%9A%84%E5%8F%8D%E5%B0%84/" class="related__link">初识golang中的反射</a>
         </li>
         
@@ -2444,10 +2744,6 @@ if (!doNotTrack) {
           <a href="/87.html" class="related__link">golang 中 time 包的时区问题</a>
         </li>
         
-        <li>
-          <a href="/75.html" class="related__link">golang 中 for range 的问题</a>
-        </li>
-        
     </ul>
     
   </section>
@@ -2455,21 +2751,14 @@ if (!doNotTrack) {
 <nav class="pagination-single">
   
     
-      <a href="http://blog.cybermilly.com/posts/%E5%A4%96%E9%83%A8%E4%B8%BB%E6%9C%BA%E6%97%A0%E6%B3%95%E8%AE%BF%E9%97%AE%E5%AE%BF%E4%B8%BB%E6%9C%BA%E5%86%85%E5%AE%B9%E5%99%A8%E6%98%AF%E6%80%8E%E4%B9%88%E5%9B%9E%E4%BA%8B/" class="pagination-single__left">
+      <a href="http://blog.cybermilly.com/posts/design-pattern-with-go-singleton/" class="pagination-single__left">
         <div class="pagination-single__icon">
           <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z"/><path fill="currentColor" d="M19 11H7.83l4.88-4.88c.39-.39.39-1.03 0-1.42-.39-.39-1.02-.39-1.41 0l-6.59 6.59c-.39.39-.39 1.02 0 1.41l6.59 6.59c.39.39 1.02.39 1.41 0 .39-.39.39-1.02 0-1.41L7.83 13H19c.55 0 1-.45 1-1s-.45-1-1-1z"/></svg>
         </div>
-        <div class="pagination-single__left-title">外部主机无法访问宿主机内容器是怎么回事</div>      
+        <div class="pagination-single__left-title">Design Pattern With Go: Singleton</div>      
       </a>
     
     <div class="grow"></div>
-    
-      <a href="http://blog.cybermilly.com/posts/design-pattern-with-go-factory/" class="pagination-single__right">      
-        <div class="pagination-single__right-title">Design Pattern With Go: Factory</div>
-        <div class="pagination-single__icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z"/><path fill="currentColor" d="M5 13h11.17l-4.88 4.88c-.39.39-.39 1.03 0 1.42.39.39 1.02.39 1.41 0l6.59-6.59c.39-.39.39-1.02 0-1.41l-6.58-6.6c-.39-.39-1.02-.39-1.41 0-.39.39-.39 1.02 0 1.41L16.17 11H5c-.55 0-1 .45-1 1s.45 1 1 1z"/></svg>
-        </div>
-      </a>
     
   
 </nav>
@@ -2480,8 +2769,8 @@ if (!doNotTrack) {
 <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" crossorigin="anonymous"></script>
 <script>
   var gitalk = new Gitalk({
-    id: '2021-03-22 11:58:09 \u002b0800 CST',
-    title: 'Design Pattern With Go: Singleton',
+    id: '2021-03-25 15:06:14 \u002b0800 CST',
+    title: 'Design Pattern With Go: Factory',
     clientID: '961f18e5979c8196d020',
     clientSecret: '0c0d502f330cc47d5623ee2eef7c9949319fd3c9',
     repo: 'comments',
@@ -2845,17 +3134,21 @@ document.addEventListener('DOMContentLoaded', function () {
   <div class="toc " data-dir="ltr" data-folding="true" data-ani="true">
     <nav id="TableOfContents">
   <ul>
-    <li><a href="#定义">定义</a></li>
-    <li><a href="#饿汉式">饿汉式</a></li>
-    <li><a href="#懒汉式">懒汉式</a></li>
-    <li><a href="#双重检测懒汉式">双重检测懒汉式</a></li>
-    <li><a href="#性能测试">性能测试</a></li>
-    <li><a href="#单例模式的问题及替代方案">单例模式的问题及替代方案</a>
-      <ul>
-        <li><a href="#单例模式的问题">单例模式的问题</a></li>
-        <li><a href="#替代方案">替代方案</a></li>
-      </ul>
-    </li>
+    <li><a href="#模式结构">模式结构</a></li>
+    <li><a href="#代码设计">代码设计</a></li>
+    <li><a href="#小结">小结</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#模式结构-1">模式结构</a></li>
+    <li><a href="#代码设计-1">代码设计</a></li>
+    <li><a href="#小结-1">小结</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#模式结构-2">模式结构</a></li>
+    <li><a href="#代码设计-2">代码设计</a></li>
+    <li><a href="#小结-2">小结</a></li>
   </ul>
 </nav>
   </div>
