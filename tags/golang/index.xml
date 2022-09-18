@@ -1,248 +1,63 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<rss version="2.0" 
-  xmlns:content="http://purl.org/rss/1.0/modules/content/" 
-  xmlns:dc="http://purl.org/dc/elements/1.1/" 
-  xmlns:atom="http://www.w3.org/2005/Atom" 
-  xmlns:sy="http://purl.org/rss/1.0/modules/syndication/" 
-  xmlns:media="http://search.yahoo.com/mrss/">
-  <channel>
-    <title>golang on chit-chat</title>
-    <link>http://blog.cybermilly.com/tags/golang/</link>
-    <description>Recent content in golang on chit-chat</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>zh</language>
-    <managingEditor>geekerekeep@gmail.com (Jonathan Lu)</managingEditor>
-    <webMaster>geekerekeep@gmail.com (Jonathan Lu)</webMaster>
-    <copyright>&amp;copy;2019~time.Now(), All Rights Reserved</copyright>
-    <lastBuildDate>Thu, 25 Mar 2021 15:06:14 +0800</lastBuildDate>
-    
-        <atom:link href="http://blog.cybermilly.com/tags/golang/index.xml" rel="self" type="application/rss+xml" />
-    
-    
-    
-
-      
-      <item>
-        <title>Design Pattern With Go: Factory</title>
-        <link>http://blog.cybermilly.com/posts/design-pattern-with-go-factory/</link>
-        <pubDate>Thu, 25 Mar 2021 15:06:14 +0800</pubDate>
-        <author>geekerekeep@gmail.com (Jonathan Lu)</author>
-        <atom:modified>Thu, 25 Mar 2021 15:06:14 +0800</atom:modified>
-        <guid>http://blog.cybermilly.com/posts/design-pattern-with-go-factory/</guid>
-        <description>这次介绍的设计模式是工厂模式，这是一个比较常见的创建型模式。一般情况下，工厂模式分为三种：简单工厂、工厂方法和抽象工厂，下面慢慢举例介绍下。</description>
-        
-        <dc:creator>Jonathan Lu</dc:creator>
-        
-        
-        
-        
-          
-            
-              <category>golang</category>
-            
-          
-            
-              <category>design-pattern</category>
-            
-          
-        
-        
-          
-            
-              <category>golang</category>
-            
-          
-            
-              <category>design-pattern</category>
-            
-          
-        
-        
-      </item>
-      
-      <item>
-        <title>Design Pattern With Go: Singleton</title>
-        <link>http://blog.cybermilly.com/posts/design-pattern-with-go-singleton/</link>
-        <pubDate>Mon, 22 Mar 2021 11:58:09 +0800</pubDate>
-        <author>geekerekeep@gmail.com (Jonathan Lu)</author>
-        <atom:modified>Mon, 22 Mar 2021 11:58:09 +0800</atom:modified>
-        <guid>http://blog.cybermilly.com/posts/design-pattern-with-go-singleton/</guid>
-        <description>定义 一个类只允许创建一个对象（或者实例），那这个类就是一个单例类，这种设计模式就叫作单例模式。当某些数据只需要在系统中保留一份的时候，可以选</description>
-        
-        <dc:creator>Jonathan Lu</dc:creator>
-        
-        
-        
-        
-          
-            
-              <category>golang</category>
-            
-          
-            
-              <category>design-pattern</category>
-            
-          
-        
-        
-          
-            
-              <category>golang</category>
-            
-          
-            
-              <category>design-pattern</category>
-            
-          
-        
-        
-      </item>
-      
-      <item>
-        <title>初识golang中的反射</title>
-        <link>http://blog.cybermilly.com/posts/%E5%88%9D%E8%AF%86golang%E4%B8%AD%E7%9A%84%E5%8F%8D%E5%B0%84/</link>
-        <pubDate>Fri, 13 Sep 2019 14:26:53 +0000</pubDate>
-        <author>geekerekeep@gmail.com (Jonathan Lu)</author>
-        <atom:modified>Fri, 13 Sep 2019 14:26:53 +0000</atom:modified>
-        <guid>http://blog.cybermilly.com/posts/%E5%88%9D%E8%AF%86golang%E4%B8%AD%E7%9A%84%E5%8F%8D%E5%B0%84/</guid>
-        <description>定义类型、声明变量、使用变量是一门编程语言的基本功能，我们可以这样来定义一个结构体类型： 1 2 3 4 type Foo struct { X string `foo:&amp;#34;x&amp;#34;` Y int `foo:&amp;#34;y&amp;#34;` } 像这样来使用这个类型声</description>
-        
-        <dc:creator>Jonathan Lu</dc:creator>
-        
-        
-        
-        
-          
-            
-              <category>golang</category>
-            
-          
-        
-        
-        
-      </item>
-      
-      <item>
-        <title>读源码:redigo 的连接池</title>
-        <link>http://blog.cybermilly.com/posts/%E8%AF%BB%E6%BA%90%E7%A0%81-redigo-%E7%9A%84%E8%BF%9E%E6%8E%A5%E6%B1%A0/</link>
-        <pubDate>Sun, 23 Jun 2019 23:20:48 +0000</pubDate>
-        <author>geekerekeep@gmail.com (Jonathan Lu)</author>
-        <atom:modified>Sun, 23 Jun 2019 23:20:48 +0000</atom:modified>
-        <guid>http://blog.cybermilly.com/posts/%E8%AF%BB%E6%BA%90%E7%A0%81-redigo-%E7%9A%84%E8%BF%9E%E6%8E%A5%E6%B1%A0/</guid>
-        <description>前面有说到，redigo 不是一个并发安全的 redis 库，它推荐在并发时使用连接池来访问 redis 服务器，redigo 连接池的典型使用方法如下所示： 1 2 3 4 5</description>
-        
-        <dc:creator>Jonathan Lu</dc:creator>
-        
-        
-        
-        
-          
-            
-              <category>读源码</category>
-            
-          
-            
-              <category>golang</category>
-            
-          
-        
-        
-        
-      </item>
-      
-      <item>
-        <title>读源码:redigo为什么多线程不安全</title>
-        <link>http://blog.cybermilly.com/posts/%E8%AF%BB%E6%BA%90%E7%A0%81-redigo%E4%B8%BA%E4%BB%80%E4%B9%88%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8D%E5%AE%89%E5%85%A8/</link>
-        <pubDate>Sun, 16 Jun 2019 21:05:45 +0000</pubDate>
-        <author>geekerekeep@gmail.com (Jonathan Lu)</author>
-        <atom:modified>Sun, 16 Jun 2019 21:05:45 +0000</atom:modified>
-        <guid>http://blog.cybermilly.com/posts/%E8%AF%BB%E6%BA%90%E7%A0%81-redigo%E4%B8%BA%E4%BB%80%E4%B9%88%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8D%E5%AE%89%E5%85%A8/</guid>
-        <description>redigo是golang的一个操作redis的第三方库，之所以选择这个库，是因为它的文档十分丰富，操作起来也比较简单。一个典型的redig</description>
-        
-        <dc:creator>Jonathan Lu</dc:creator>
-        
-        
-        
-        
-          
-            
-              <category>读源码</category>
-            
-          
-            
-              <category>golang</category>
-            
-          
-        
-        
-        
-      </item>
-      
-      <item>
-        <title>golang 中 time 包的时区问题</title>
-        <link>http://blog.cybermilly.com/87.html</link>
-        <pubDate>Fri, 24 May 2019 16:16:49 +0000</pubDate>
-        <author>geekerekeep@gmail.com (Jonathan Lu)</author>
-        <atom:modified>Fri, 24 May 2019 16:16:49 +0000</atom:modified>
-        <guid>http://blog.cybermilly.com/87.html</guid>
-        <description>最近项目中有一个功能，是定时从远端服务器同步数据到本地，数据中有一个字段是时间格式的。每次我的同步程序从服务器上获取到数据和本地数据库保存的</description>
-        
-        <dc:creator>Jonathan Lu</dc:creator>
-        
-        
-        
-        
-          
-            
-              <category>golang</category>
-            
-          
-        
-        
-          
-            
-              <category>golang</category>
-            
-          
-        
-        
-      </item>
-      
-      <item>
-        <title>golang 中 for range 的问题</title>
-        <link>http://blog.cybermilly.com/75.html</link>
-        <pubDate>Wed, 17 Apr 2019 14:21:09 +0000</pubDate>
-        <author>geekerekeep@gmail.com (Jonathan Lu)</author>
-        <atom:modified>Wed, 17 Apr 2019 14:21:09 +0000</atom:modified>
-        <guid>http://blog.cybermilly.com/75.html</guid>
-        <description>最近项目在使用 golang 开发，对于一直使用 c 开发的我来说 golang 有着十分强大的内置库，生态也还可以，使用起来确实十分的舒适，最重要的是不需要手动管理内存，</description>
-        
-        <dc:creator>Jonathan Lu</dc:creator>
-        
-        
-        
-        
-          
-            
-              <category>golang</category>
-            
-          
-        
-        
-          
-            
-              <category>golang</category>
-            
-          
-            
-              <category>编程杂记</category>
-            
-          
-        
-        
-      </item>
-      
-
-    
-  </channel>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>golang - Tag - chit-chat</title>
+        <link>https://loojee.github.io/tags/golang/</link>
+        <description>golang - Tag - chit-chat</description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>&amp;copy;2019~time.Now(), All Rights Reserved</copyright><lastBuildDate>Thu, 25 Mar 2021 15:06:14 &#43;0800</lastBuildDate><atom:link href="https://loojee.github.io/tags/golang/" rel="self" type="application/rss+xml" /><item>
+    <title>Design Pattern With Go: Factory</title>
+    <link>https://loojee.github.io/posts/design-pattern-with-go-factory/</link>
+    <pubDate>Thu, 25 Mar 2021 15:06:14 &#43;0800</pubDate>
+    <author>Loojee</author>
+    <guid>https://loojee.github.io/posts/design-pattern-with-go-factory/</guid>
+    <description><![CDATA[这次介绍的设计模式是工厂模式，这是一个比较常见的创建型模式。一般情况下，工厂模式分为三种：简单工厂、工厂方法和抽象工厂，下面慢慢举例介绍下。]]></description>
+</item>
+<item>
+    <title>Design Pattern With Go: Singleton</title>
+    <link>https://loojee.github.io/posts/design-pattern-with-go-singleton/</link>
+    <pubDate>Mon, 22 Mar 2021 11:58:09 &#43;0800</pubDate>
+    <author>Loojee</author>
+    <guid>https://loojee.github.io/posts/design-pattern-with-go-singleton/</guid>
+    <description><![CDATA[定义 一个类只允许创建一个对象（或者实例），那这个类就是一个单例类，这种设计模式就叫作单例模式。当某些数据只需要在系统中保留一份的时候，可以选]]></description>
+</item>
+<item>
+    <title>初识golang中的反射</title>
+    <link>https://loojee.github.io/first_meet_golang_reflect.html</link>
+    <pubDate>Fri, 13 Sep 2019 14:26:53 &#43;0000</pubDate>
+    <author>Loojee</author>
+    <guid>https://loojee.github.io/first_meet_golang_reflect.html</guid>
+    <description><![CDATA[定义类型、声明变量、使用变量是一门编程语言的基本功能，我们可以这样来定义一个结构体类型： type Foo struct { X string `foo:&#34;x&#34;` Y int `foo:&#34;y&#34;` } 像这样来使用这个类型声明一个变]]></description>
+</item>
+<item>
+    <title>读源码:redigo 的连接池</title>
+    <link>https://loojee.github.io/redigo_pool.html</link>
+    <pubDate>Sun, 23 Jun 2019 23:20:48 &#43;0000</pubDate>
+    <author>Loojee</author>
+    <guid>https://loojee.github.io/redigo_pool.html</guid>
+    <description><![CDATA[前面有说到，redigo 不是一个并发安全的 redis 库，它推荐在并发时使用连接池来访问 redis 服务器，redigo 连接池的典型使用方法如下所示： package main import ( &#34;github.com/gomodule/redigo/redis&#34;]]></description>
+</item>
+<item>
+    <title>读源码:redigo为什么多线程不安全</title>
+    <link>https://loojee.github.io/why_redis_unsafe_in_concurrence.html</link>
+    <pubDate>Sun, 16 Jun 2019 21:05:45 &#43;0000</pubDate>
+    <author>Loojee</author>
+    <guid>https://loojee.github.io/why_redis_unsafe_in_concurrence.html</guid>
+    <description><![CDATA[redigo是golang的一个操作redis的第三方库，之所以选择这个库，是因为它的文档十分丰富，操作起来也比较简单。一个典型的redig]]></description>
+</item>
+<item>
+    <title>golang 中 time 包的时区问题</title>
+    <link>https://loojee.github.io/time_package_in_golang.html</link>
+    <pubDate>Fri, 24 May 2019 16:16:49 &#43;0000</pubDate>
+    <author>Loojee</author>
+    <guid>https://loojee.github.io/time_package_in_golang.html</guid>
+    <description><![CDATA[最近项目中有一个功能，是定时从远端服务器同步数据到本地，数据中有一个字段是时间格式的。每次我的同步程序从服务器上获取到数据和本地数据库保存的]]></description>
+</item>
+<item>
+    <title>golang 中 for range 的问题</title>
+    <link>https://loojee.github.io/for_range_in_golang.html</link>
+    <pubDate>Wed, 17 Apr 2019 14:21:09 &#43;0000</pubDate>
+    <author>Loojee</author>
+    <guid>https://loojee.github.io/for_range_in_golang.html</guid>
+    <description><![CDATA[最近项目在使用 golang 开发，对于一直使用 c 开发的我来说 golang 有着十分强大的内置库，生态也还可以，使用起来确实十分的舒适，最重要的是不需要手动管理内存，]]></description>
+</item>
+</channel>
 </rss>

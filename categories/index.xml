@@ -1,118 +1,39 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<rss version="2.0" 
-  xmlns:content="http://purl.org/rss/1.0/modules/content/" 
-  xmlns:dc="http://purl.org/dc/elements/1.1/" 
-  xmlns:atom="http://www.w3.org/2005/Atom" 
-  xmlns:sy="http://purl.org/rss/1.0/modules/syndication/" 
-  xmlns:media="http://search.yahoo.com/mrss/">
-  <channel>
-    <title>Categories on chit-chat</title>
-    <link>http://blog.cybermilly.com/categories/</link>
-    <description>Recent content in Categories on chit-chat</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>zh</language>
-    <managingEditor>geekerekeep@gmail.com (Jonathan Lu)</managingEditor>
-    <webMaster>geekerekeep@gmail.com (Jonathan Lu)</webMaster>
-    <copyright>&amp;copy;2019~time.Now(), All Rights Reserved</copyright>
-    <lastBuildDate>Thu, 25 Mar 2021 15:06:14 +0800</lastBuildDate>
-    
-        <atom:link href="http://blog.cybermilly.com/categories/index.xml" rel="self" type="application/rss+xml" />
-    
-    
-    
-
-      
-      <item>
-        <title>design-pattern</title>
-        <link>http://blog.cybermilly.com/categories/design-pattern/</link>
-        <pubDate>Thu, 25 Mar 2021 15:06:14 +0800</pubDate>
-        <author>geekerekeep@gmail.com (Jonathan Lu)</author>
-        
-        <guid>http://blog.cybermilly.com/categories/design-pattern/</guid>
-        <description></description>
-        
-        <dc:creator>Jonathan Lu</dc:creator>
-        
-        
-        
-        
-        
-        
-      </item>
-      
-      <item>
-        <title>golang</title>
-        <link>http://blog.cybermilly.com/categories/golang/</link>
-        <pubDate>Thu, 25 Mar 2021 15:06:14 +0800</pubDate>
-        <author>geekerekeep@gmail.com (Jonathan Lu)</author>
-        
-        <guid>http://blog.cybermilly.com/categories/golang/</guid>
-        <description></description>
-        
-        <dc:creator>Jonathan Lu</dc:creator>
-        
-        
-        
-        
-        
-        
-      </item>
-      
-      <item>
-        <title>编程杂记</title>
-        <link>http://blog.cybermilly.com/categories/%E7%BC%96%E7%A8%8B%E6%9D%82%E8%AE%B0/</link>
-        <pubDate>Wed, 17 Apr 2019 14:21:09 +0000</pubDate>
-        <author>geekerekeep@gmail.com (Jonathan Lu)</author>
-        
-        <guid>http://blog.cybermilly.com/categories/%E7%BC%96%E7%A8%8B%E6%9D%82%E8%AE%B0/</guid>
-        <description></description>
-        
-        <dc:creator>Jonathan Lu</dc:creator>
-        
-        
-        
-        
-        
-        
-      </item>
-      
-      <item>
-        <title>网络技术</title>
-        <link>http://blog.cybermilly.com/categories/%E7%BD%91%E7%BB%9C%E6%8A%80%E6%9C%AF/</link>
-        <pubDate>Sun, 31 Mar 2019 14:18:43 +0000</pubDate>
-        <author>geekerekeep@gmail.com (Jonathan Lu)</author>
-        
-        <guid>http://blog.cybermilly.com/categories/%E7%BD%91%E7%BB%9C%E6%8A%80%E6%9C%AF/</guid>
-        <description></description>
-        
-        <dc:creator>Jonathan Lu</dc:creator>
-        
-        
-        
-        
-        
-        
-      </item>
-      
-      <item>
-        <title>杂记</title>
-        <link>http://blog.cybermilly.com/categories/%E6%9D%82%E8%AE%B0/</link>
-        <pubDate>Sun, 24 Mar 2019 14:32:43 +0000</pubDate>
-        <author>geekerekeep@gmail.com (Jonathan Lu)</author>
-        
-        <guid>http://blog.cybermilly.com/categories/%E6%9D%82%E8%AE%B0/</guid>
-        <description></description>
-        
-        <dc:creator>Jonathan Lu</dc:creator>
-        
-        
-        
-        
-        
-        
-      </item>
-      
-
-    
-  </channel>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>Categories - Category - chit-chat</title>
+        <link>https://loojee.github.io/categories/</link>
+        <description>Categories - Category - chit-chat</description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>&amp;copy;2019~time.Now(), All Rights Reserved</copyright><lastBuildDate>Thu, 25 Mar 2021 15:06:14 &#43;0800</lastBuildDate><atom:link href="https://loojee.github.io/categories/" rel="self" type="application/rss+xml" /><item>
+    <title>design-pattern</title>
+    <link>https://loojee.github.io/categories/design-pattern/</link>
+    <pubDate>Thu, 25 Mar 2021 15:06:14 &#43;0800</pubDate>
+    <author>Loojee</author>
+    <guid>https://loojee.github.io/categories/design-pattern/</guid>
+    <description><![CDATA[]]></description>
+</item>
+<item>
+    <title>golang</title>
+    <link>https://loojee.github.io/categories/golang/</link>
+    <pubDate>Thu, 25 Mar 2021 15:06:14 &#43;0800</pubDate>
+    <author>Loojee</author>
+    <guid>https://loojee.github.io/categories/golang/</guid>
+    <description><![CDATA[]]></description>
+</item>
+<item>
+    <title>编程杂记</title>
+    <link>https://loojee.github.io/categories/%E7%BC%96%E7%A8%8B%E6%9D%82%E8%AE%B0/</link>
+    <pubDate>Wed, 17 Apr 2019 14:21:09 &#43;0000</pubDate>
+    <author>Loojee</author>
+    <guid>https://loojee.github.io/categories/%E7%BC%96%E7%A8%8B%E6%9D%82%E8%AE%B0/</guid>
+    <description><![CDATA[]]></description>
+</item>
+<item>
+    <title>network</title>
+    <link>https://loojee.github.io/categories/network/</link>
+    <pubDate>Sun, 31 Mar 2019 14:18:43 &#43;0000</pubDate>
+    <author>Loojee</author>
+    <guid>https://loojee.github.io/categories/network/</guid>
+    <description><![CDATA[]]></description>
+</item>
+</channel>
 </rss>

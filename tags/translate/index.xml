@@ -1,0 +1,15 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>translate - Tag - chit-chat</title>
+        <link>https://loojee.github.io/tags/translate/</link>
+        <description>translate - Tag - chit-chat</description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>&amp;copy;2019~time.Now(), All Rights Reserved</copyright><atom:link href="https://loojee.github.io/tags/translate/" rel="self" type="application/rss+xml" /><item>
+    <title>译-redis延迟问题排查</title>
+    <link>https://loojee.github.io/translation_redis_latency.html</link>
+    <pubDate>Mon, 01 Jan 0001 00:00:00 &#43;0000</pubDate>
+    <author>Loojee</author>
+    <guid>https://loojee.github.io/translation_redis_latency.html</guid>
+    <description><![CDATA[本文是对 redis 官方文档 Redis latency problems troubleshooting 的翻译，诸位看官可结合原文食用。 这个文档将会帮助你理解在使用 Redis 遇到延迟问题时发生了什么。 在这个上下文中，延迟指的是]]></description>
+</item>
+</channel>
+</rss>

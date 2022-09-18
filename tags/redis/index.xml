@@ -1,56 +1,15 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<rss version="2.0" 
-  xmlns:content="http://purl.org/rss/1.0/modules/content/" 
-  xmlns:dc="http://purl.org/dc/elements/1.1/" 
-  xmlns:atom="http://www.w3.org/2005/Atom" 
-  xmlns:sy="http://purl.org/rss/1.0/modules/syndication/" 
-  xmlns:media="http://search.yahoo.com/mrss/">
-  <channel>
-    <title>redis on chit-chat</title>
-    <link>http://blog.cybermilly.com/tags/redis/</link>
-    <description>Recent content in redis on chit-chat</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>zh</language>
-    <managingEditor>geekerekeep@gmail.com (Jonathan Lu)</managingEditor>
-    <webMaster>geekerekeep@gmail.com (Jonathan Lu)</webMaster>
-    <copyright>&amp;copy;2019~time.Now(), All Rights Reserved</copyright>
-    <lastBuildDate>Sun, 15 Sep 2019 19:21:48 +0000</lastBuildDate>
-    
-        <atom:link href="http://blog.cybermilly.com/tags/redis/index.xml" rel="self" type="application/rss+xml" />
-    
-    
-    
-
-      
-      <item>
-        <title>译-redis延迟问题排查</title>
-        <link>http://blog.cybermilly.com/posts/%E8%AF%91-redis%E5%BB%B6%E8%BF%9F%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/</link>
-        <pubDate>Sun, 15 Sep 2019 19:21:48 +0000</pubDate>
-        <author>geekerekeep@gmail.com (Jonathan Lu)</author>
-        <atom:modified>Sun, 15 Sep 2019 19:21:48 +0000</atom:modified>
-        <guid>http://blog.cybermilly.com/posts/%E8%AF%91-redis%E5%BB%B6%E8%BF%9F%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/</guid>
-        <description>本文是对 redis 官方文档 Redis latency problems troubleshooting 的翻译，诸位看官可结合原文食用。 这个文档将会帮助你理解在使用 Redis 遇到延迟问题时发生了什么。 在这个上下文中，延迟指的是</description>
-        
-        <dc:creator>Jonathan Lu</dc:creator>
-        
-        
-        
-        
-          
-            
-              <category>redis</category>
-            
-          
-            
-              <category>学习笔记</category>
-            
-          
-        
-        
-        
-      </item>
-      
-
-    
-  </channel>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>redis - Tag - chit-chat</title>
+        <link>https://loojee.github.io/tags/redis/</link>
+        <description>redis - Tag - chit-chat</description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>&amp;copy;2019~time.Now(), All Rights Reserved</copyright><atom:link href="https://loojee.github.io/tags/redis/" rel="self" type="application/rss+xml" /><item>
+    <title>译-redis延迟问题排查</title>
+    <link>https://loojee.github.io/translation_redis_latency.html</link>
+    <pubDate>Mon, 01 Jan 0001 00:00:00 &#43;0000</pubDate>
+    <author>Loojee</author>
+    <guid>https://loojee.github.io/translation_redis_latency.html</guid>
+    <description><![CDATA[本文是对 redis 官方文档 Redis latency problems troubleshooting 的翻译，诸位看官可结合原文食用。 这个文档将会帮助你理解在使用 Redis 遇到延迟问题时发生了什么。 在这个上下文中，延迟指的是]]></description>
+</item>
+</channel>
 </rss>

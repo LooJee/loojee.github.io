@@ -1,58 +1,15 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<rss version="2.0" 
-  xmlns:content="http://purl.org/rss/1.0/modules/content/" 
-  xmlns:dc="http://purl.org/dc/elements/1.1/" 
-  xmlns:atom="http://www.w3.org/2005/Atom" 
-  xmlns:sy="http://purl.org/rss/1.0/modules/syndication/" 
-  xmlns:media="http://search.yahoo.com/mrss/">
-  <channel>
-    <title>DNS on chit-chat</title>
-    <link>http://blog.cybermilly.com/tags/dns/</link>
-    <description>Recent content in DNS on chit-chat</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>zh</language>
-    <managingEditor>geekerekeep@gmail.com (Jonathan Lu)</managingEditor>
-    <webMaster>geekerekeep@gmail.com (Jonathan Lu)</webMaster>
-    <copyright>&amp;copy;2019~time.Now(), All Rights Reserved</copyright>
-    <lastBuildDate>Sun, 31 Mar 2019 14:18:43 +0000</lastBuildDate>
-    
-        <atom:link href="http://blog.cybermilly.com/tags/dns/index.xml" rel="self" type="application/rss+xml" />
-    
-    
-    
-
-      
-      <item>
-        <title>初探域名解析</title>
-        <link>http://blog.cybermilly.com/63.html</link>
-        <pubDate>Sun, 31 Mar 2019 14:18:43 +0000</pubDate>
-        <author>geekerekeep@gmail.com (Jonathan Lu)</author>
-        <atom:modified>Sun, 31 Mar 2019 14:18:43 +0000</atom:modified>
-        <guid>http://blog.cybermilly.com/63.html</guid>
-        <description>最近发现在 aws 上有 12 个月免费使用的 ec2 主机，于是就注册了一个，顺便搭建了这个博客。但是，一个好的博客不能总是用 IP 来访问的嘛。于是就在 godaddy 上买了一个</description>
-        
-        <dc:creator>Jonathan Lu</dc:creator>
-        
-        
-        
-        
-          
-            
-              <category>DNS</category>
-            
-          
-        
-        
-          
-            
-              <category>网络技术</category>
-            
-          
-        
-        
-      </item>
-      
-
-    
-  </channel>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>DNS - Tag - chit-chat</title>
+        <link>https://loojee.github.io/tags/dns/</link>
+        <description>DNS - Tag - chit-chat</description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>&amp;copy;2019~time.Now(), All Rights Reserved</copyright><lastBuildDate>Sun, 31 Mar 2019 14:18:43 &#43;0000</lastBuildDate><atom:link href="https://loojee.github.io/tags/dns/" rel="self" type="application/rss+xml" /><item>
+    <title>初探域名解析</title>
+    <link>https://loojee.github.io/63.html</link>
+    <pubDate>Sun, 31 Mar 2019 14:18:43 &#43;0000</pubDate>
+    <author>Loojee</author>
+    <guid>https://loojee.github.io/63.html</guid>
+    <description><![CDATA[最近发现在 aws 上有 12 个月免费使用的 ec2 主机，于是就注册了一个，顺便搭建了这个博客。但是，一个好的博客不能总是用 IP 来访问的嘛。于是就在 godaddy 上买了一个]]></description>
+</item>
+</channel>
 </rss>
